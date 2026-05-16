@@ -42,27 +42,47 @@
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!points [@user]</code><div class="cmd-aliases">also: <code>!walrus</code>, <code>!martinis</code></div></td>
-            <td class="cmd-desc">Show your balance. Add @user to look up someone else.</td>
+            <td class="cmd-desc">
+              Show your balance. Add @user to look up someone else.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!top</code><div class="cmd-aliases">also: <code>!leaderboard</code>, <code>!ranklist</code></div></td>
-            <td class="cmd-desc">Top 10 holders.</td>
+            <td class="cmd-desc">
+              Top 10 holders.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!rank [@user]</code></td>
-            <td class="cmd-desc">Your position on the leaderboard.</td>
+            <td class="cmd-desc">
+              Your position on the leaderboard.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!totalpoints</code></td>
-            <td class="cmd-desc">Total walrus martinis held across chat.</td>
+            <td class="cmd-desc">
+              Total walrus martinis held across chat.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!give @user &lt;amount&gt;</code><div class="cmd-aliases">also: <code>!transfer</code>, <code>!givepoints</code></div></td>
-            <td class="cmd-desc">Send some of your balance to another viewer. Amount: 100 / 50% / 1/2 / all.</td>
+            <td class="cmd-desc">
+              Send some of your balance to another viewer. Amount: 100 / 50% / 1/2 / all.
+              
+              
+            </td>
           </tr>
         
       </tbody>
@@ -72,48 +92,85 @@
 
   <section class="cmd-group">
     <h2>Gambling</h2>
-    <p class="group-blurb">Every bet command accepts the same formats — a raw number, a percent of your balance, a fraction, or <code>all</code>.</p>
+    <p class="group-blurb">Bet formats: <code>100</code> raw, <code>1k</code>/<code>1m</code> denominations, <code>50%</code>/<code>.5%</code> percent of balance, <code>1/2</code> fraction, or <code>all</code>. Minimum bet across all gambling commands is <strong>100</strong> walrus martinis.</p>
     <table class="cmd-table">
       <tbody>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!slots &lt;bet&gt;</code><div class="cmd-aliases">also: <code>!slot</code>, <code>!slotmachine</code>, <code>!sm</code>, <code>!smp</code></div></td>
-            <td class="cmd-desc">Three-reel slot machine using top 7tv emotes. 3-of-a-kind pays 15x-80x based on rarity, 2-of-a-kind pays 2x, no match loses bet. ~89% RTP.</td>
+            <td class="cmd-desc">
+              Three-reel slot machine using top 7tv emotes. Weighted by chat-usage count (common emotes spin more often, rare ones less). ~103% RTP, very high variance — pair pays nothing, jackpots are huge.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">3 of a kind</td><td class="payout-value">47x – 215x bet (per-symbol, see table)</td></tr><tr><td class="payout-outcome">2 of a kind</td><td class="payout-value">no payout (lose bet) — visual near-miss only</td></tr><tr><td class="payout-outcome">no match</td><td class="payout-value">lose bet</td></tr></tbody></table>
+              
+    <details class="symbol-details">
+      <summary>3-of-a-kind multiplier per symbol</summary>
+      <table class="symbol-table"><thead><tr><th>#</th><th>Symbol</th><th>Jackpot</th></tr></thead><tbody><tr><td class="sym-rank">1</td><td class="sym-name"><code>that</code></td><td class="sym-mult">47x</td></tr><tr><td class="sym-rank">2</td><td class="sym-name"><code>om</code></td><td class="sym-mult">63x</td></tr><tr><td class="sym-rank">3</td><td class="sym-name"><code>!gamble</code></td><td class="sym-mult">74x</td></tr><tr><td class="sym-rank">4</td><td class="sym-name"><code>oh</code></td><td class="sym-mult">104x</td></tr><tr><td class="sym-rank">5</td><td class="sym-name"><code>mhm</code></td><td class="sym-mult">132x</td></tr><tr><td class="sym-rank">6</td><td class="sym-name"><code>Saddi</code></td><td class="sym-mult">147x</td></tr><tr><td class="sym-rank">7</td><td class="sym-name"><code>there</code></td><td class="sym-mult">156x</td></tr><tr><td class="sym-rank">8</td><td class="sym-name"><code>xdd</code></td><td class="sym-mult">175x</td></tr><tr><td class="sym-rank">9</td><td class="sym-name"><code>LOL</code></td><td class="sym-mult">192x</td></tr><tr><td class="sym-rank">10</td><td class="sym-name"><code>milla</code></td><td class="sym-mult">215x</td></tr><tr><td class="sym-rank">11</td><td class="sym-name"><code>hi</code></td><td class="sym-mult">215x</td></tr><tr><td class="sym-rank">12</td><td class="sym-name"><code>um</code></td><td class="sym-mult">215x</td></tr></tbody></table>
+    </details>
+  
+            </td>
           </tr>
         
           <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!gamble &lt;bet&gt;</code></td>
-            <td class="cmd-desc">Fair 50/50 coin flip. Win returns 2x bet.</td>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!gamble &lt;bet&gt; [heads|tails]</code></td>
+            <td class="cmd-desc">
+              Fair 50/50 coin flip. Optional second arg lets you call which side wins; if omitted, heads wins. 100% RTP.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">Win</td><td class="payout-value">2x bet (net +1x)</td></tr><tr><td class="payout-outcome">Lose</td><td class="payout-value">lose bet</td></tr></tbody></table>
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!duel @user &lt;bet&gt;</code></td>
-            <td class="cmd-desc">1v1 challenge. Target has 60s to !accept or !decline.</td>
+            <td class="cmd-desc">
+              1v1 challenge. Target has 60s to !accept or !decline. Both players must have enough balance to cover the stake.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">Win</td><td class="payout-value">take 1x stake from opponent (net +bet)</td></tr><tr><td class="payout-outcome">Lose</td><td class="payout-value">opponent takes your stake (net -bet)</td></tr><tr><td class="payout-outcome">Expired/declined</td><td class="payout-value">no stake changes hands</td></tr></tbody></table>
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!accept</code></td>
-            <td class="cmd-desc">Accept a duel against you. Winner takes the stake.</td>
+            <td class="cmd-desc">
+              Accept a duel against you. Winner takes the stake.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!decline</code><div class="cmd-aliases">also: <code>!deny</code></div></td>
-            <td class="cmd-desc">Decline a pending duel.</td>
+            <td class="cmd-desc">
+              Decline a pending duel.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!cancelduel</code></td>
-            <td class="cmd-desc">Cancel your outgoing duel challenge.</td>
+            <td class="cmd-desc">
+              Cancel your outgoing duel challenge.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!heist &lt;bet&gt;</code></td>
-            <td class="cmd-desc">Community heist. First call opens a 60s window. Subsequent calls join the pot. Each participant rolls 50/50: survivors double up, casualties lose their stake. One heist at a time.</td>
+            <td class="cmd-desc">
+              Community heist. First call opens a 60s window. Subsequent calls join the pot. Each participant rolls 50/50 independently when the timer ends. One heist at a time. ~100% RTP per participant.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">Survive (50%)</td><td class="payout-value">2x stake back (net +bet)</td></tr><tr><td class="payout-outcome">Die (50%)</td><td class="payout-value">lose stake</td></tr></tbody></table>
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!roulette &lt;bet&gt;</code></td>
-            <td class="cmd-desc">1/6 BANG: lose bet + 60s Twitch timeout. 5/6 *click*: win 1.2x.</td>
+            <td class="cmd-desc">
+              Russian roulette with timeouts. 100% point-RTP (the timeout is the real cost).
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">*click* (5/6)</td><td class="payout-value">1.2x bet (net +0.2x)</td></tr><tr><td class="payout-outcome">BANG (1/6)</td><td class="payout-value">lose bet + 60s Twitch timeout</td></tr></tbody></table>
+              
+            </td>
           </tr>
         
       </tbody>
@@ -129,22 +186,38 @@
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!+1</code></td>
-            <td class="cmd-desc">Increment your terrorism counter.</td>
+            <td class="cmd-desc">
+              Increment your terrorism counter.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!-1</code></td>
-            <td class="cmd-desc">Decrement.</td>
+            <td class="cmd-desc">
+              Decrement.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!+1s [@user]</code></td>
-            <td class="cmd-desc">Show the counter for you or another viewer.</td>
+            <td class="cmd-desc">
+              Show the counter for you or another viewer.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!reset+1</code></td>
-            <td class="cmd-desc">Reset your terrorism counter to zero.</td>
+            <td class="cmd-desc">
+              Reset your terrorism counter to zero.
+              
+              
+            </td>
           </tr>
         
       </tbody>
@@ -160,27 +233,47 @@
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!song</code></td>
-            <td class="cmd-desc">What is currently playing.</td>
+            <td class="cmd-desc">
+              What is currently playing.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!uptime</code></td>
-            <td class="cmd-desc">How long the stream has been live.</td>
+            <td class="cmd-desc">
+              How long the stream has been live.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!followage [@user]</code></td>
-            <td class="cmd-desc">How long you (or @user) have been following the channel.</td>
+            <td class="cmd-desc">
+              How long you (or @user) have been following the channel.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!accountage [@user]</code></td>
-            <td class="cmd-desc">How old your (or @user’s) Twitch account is.</td>
+            <td class="cmd-desc">
+              How old your (or @user’s) Twitch account is.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!commands</code></td>
-            <td class="cmd-desc">This page.</td>
+            <td class="cmd-desc">
+              This page.
+              
+              
+            </td>
           </tr>
         
       </tbody>
@@ -189,24 +282,83 @@
 
 
   <section class="cmd-group">
-    <h2>Mod-only</h2>
-    <p class="group-blurb">Restricted to moderators and the broadcaster.</p>
+    <h2>Broadcaster-only</h2>
+    <p class="group-blurb">Restricted to the broadcaster. Mods do NOT have access — these mint or overwrite balances arbitrarily.</p>
     <table class="cmd-table">
       <tbody>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!addpoints @user &lt;n&gt;</code><div class="cmd-aliases">also: <code>!bonus</code></div></td>
-            <td class="cmd-desc">Award martinis to someone.</td>
+            <td class="cmd-desc">
+              Award martinis to someone.
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!removepoints @user &lt;n&gt;</code></td>
-            <td class="cmd-desc">Subtract martinis from someone (clamped at zero).</td>
+            <td class="cmd-desc">
+              Subtract martinis from someone (clamped at zero).
+              
+              
+            </td>
           </tr>
         
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!setpoints @user &lt;n&gt;</code></td>
-            <td class="cmd-desc">Set someone’s balance to an exact value.</td>
+            <td class="cmd-desc">
+              Set someone’s balance to an exact value.
+              
+              
+            </td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </section>
+
+
+  <section class="cmd-group">
+    <h2>Channel-points redeems</h2>
+    <p class="group-blurb">Redeem channel points (via the Twitch reward UI) for walrus martinis directly. All four tiers auto-approve — credits land instantly in your chat balance.</p>
+    <table class="cmd-table">
+      <tbody>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">100 ✦ → 10,000 🦭🌴🍸</code></td>
+            <td class="cmd-desc">
+              10,000 walrus martinis.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">10,000 ✦ → 100,000 🦭🌴🍸</code></td>
+            <td class="cmd-desc">
+              100,000 walrus martinis.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">25,000 ✦ → 250,000 🦭🌴🍸</code></td>
+            <td class="cmd-desc">
+              250,000 walrus martinis.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">100,000 ✦ → 1,000,000 🦭🌴🍸</code></td>
+            <td class="cmd-desc">
+              1,000,000 walrus martinis.
+              
+              
+            </td>
           </tr>
         
       </tbody>
@@ -462,7 +614,7 @@
 </main>
 
 <footer class="site-footer">
-  <p>Generated 2026-05-15T20:49:53.496Z.</p>
+  <p>Generated 2026-05-16T06:02:28.403Z.</p>
 </footer>
 
 </body>

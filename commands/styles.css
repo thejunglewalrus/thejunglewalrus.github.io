@@ -99,3 +99,70 @@ main {
   border-top: 1px solid var(--gold-dim);
   margin-top: 3rem;
 }
+
+/* payout sub-tables inside command rows */
+.payout-table {
+  margin: 0.55rem 0 0;
+  border-collapse: collapse;
+  background: rgba(7, 10, 19, 0.55);
+  border: 1px solid rgba(154, 160, 180, 0.18);
+  border-radius: 4px;
+  font-size: 0.88rem;
+}
+.payout-table td {
+  padding: 0.32rem 0.7rem;
+  vertical-align: top;
+}
+.payout-table td + td { border-left: 1px solid rgba(154, 160, 180, 0.12); }
+.payout-table tr + tr td { border-top: 1px solid rgba(154, 160, 180, 0.10); }
+.payout-outcome {
+  color: var(--gold);
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  white-space: nowrap;
+}
+.payout-value {
+  color: var(--text);
+}
+
+/* slot symbol jackpot table (collapsed by default) */
+.symbol-details {
+  margin-top: 0.55rem;
+}
+.symbol-details summary {
+  cursor: pointer;
+  color: var(--copper);
+  font-size: 0.85rem;
+  padding: 0.2rem 0;
+}
+.symbol-details summary:hover { color: var(--gold-bright); }
+.symbol-table {
+  margin-top: 0.4rem;
+  border-collapse: collapse;
+  background: rgba(7, 10, 19, 0.55);
+  border: 1px solid rgba(154, 160, 180, 0.18);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+.symbol-table th, .symbol-table td {
+  padding: 0.28rem 0.7rem;
+  text-align: left;
+}
+.symbol-table th {
+  color: var(--muted);
+  font-weight: 500;
+  border-bottom: 1px solid rgba(154, 160, 180, 0.15);
+}
+.symbol-table tr + tr td { border-top: 1px solid rgba(154, 160, 180, 0.08); }
+.sym-rank { color: var(--muted); width: 2em; }
+.sym-name code {
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  background: rgba(200, 164, 92, 0.08);
+  padding: 0.05rem 0.4rem;
+  border-radius: 3px;
+}
+.sym-mult {
+  color: var(--gold-bright);
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  font-weight: 600;
+  text-align: right;
+}
