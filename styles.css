@@ -1,0 +1,390 @@
+/* ============================================================
+   Junglewalrus Lost Ark Hub
+   palette → reset → hero → sections → cards (panel border) →
+   pills → CTAs → KR variant → translation style A/B/C → footer
+   ============================================================ */
+
+:root{
+  --bg:          #0e1320;
+  --bg-deep:     #070a13;
+  --panel:       #161d2e;
+  --panel-hi:    #1c2338;
+  --gold:        #c8a45c;
+  --gold-bright: #f0d27a;
+  --gold-dim:    rgba(200,164,92,.35);
+  --accent:      #e07a3c;
+  --copper:      #c87a4a;
+  --text:        #e7e3d6;
+  --muted:       #9aa0b4;
+
+  --max-w: 1200px;
+  --gutter: clamp(1rem, 3vw, 2.5rem);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 16px/1.55 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body{
+  background:
+    radial-gradient(ellipse at top, rgba(200,164,92,.05), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+a{ color: var(--gold-bright); text-decoration: none; }
+a:hover{ color: var(--gold); text-decoration: underline; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  padding: clamp(3rem, 8vw, 5rem) var(--gutter) clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  border-bottom: 1px solid var(--gold-dim);
+  position: relative;
+}
+.hero-inner{ max-width: var(--max-w); margin: 0 auto; }
+.hero h1{
+  font: 700 clamp(2rem, 6vw, 3.6rem)/1.1 "Cinzel", "Cormorant Garamond", serif;
+  color: var(--gold);
+  margin: 0 0 .6rem;
+  letter-spacing: .04em;
+  text-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+.hero .tagline{
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.6vw, 1.1rem);
+  margin: 0 auto 1.25rem;
+  max-width: 38rem;
+}
+.hero-links{
+  font-size: .9rem;
+  color: var(--muted);
+}
+.hero-links a,
+.footer-links a{
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+  transition: color .15s ease;
+}
+.hero-links a:hover,
+.footer-links a:hover{
+  color: var(--gold-bright);
+  text-decoration: none;
+}
+.hero-links a:hover .icon,
+.footer-links a:hover .icon{ color: var(--gold-bright); }
+
+.icon{
+  width: 1.05em;
+  height: 1.05em;
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: color .15s ease;
+}
+.dot{ color: var(--gold-dim); margin: 0 .35rem; }
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+main{
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3rem) var(--gutter) 4rem;
+}
+
+section{
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+section:first-child{ margin-top: 0; }
+
+section > h2{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font: 700 clamp(1.3rem, 2.2vw, 1.7rem)/1 "Cinzel", serif;
+  color: var(--gold);
+  margin: 0 0 .25rem;
+  letter-spacing: .04em;
+}
+section > h2::before,
+section > h2::after{
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+section > h2::before{ background: linear-gradient(90deg, transparent 30%, var(--gold-dim)); }
+section > h2::after { background: linear-gradient(90deg, var(--gold-dim), transparent 70%); }
+
+.section-blurb{
+  text-align: center;
+  color: var(--muted);
+  font-size: .95rem;
+  margin: 0 auto 1.75rem;
+  max-width: 42rem;
+}
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.card-grid{
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+/* ============================================================
+   CARD (panel-style with double-gold border + corner ornaments)
+   ============================================================ */
+.card{
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--gold);
+  box-shadow:
+    inset 0 0 0 3px var(--bg),
+    inset 0 0 0 4px var(--gold);
+  padding: 1.5rem 1.4rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card::before,
+.card::after{
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--gold);
+  background:
+    linear-gradient(45deg, transparent 42%, var(--gold) 42% 58%, transparent 58%),
+    var(--bg);
+}
+.card::before{ top: -7px; left: -7px; }
+.card::after { bottom: -7px; right: -7px; }
+
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 3px var(--bg),
+    inset 0 0 0 4px var(--gold-bright),
+    0 0 28px rgba(240,210,122,.18);
+}
+
+.card h3,
+.card h4{
+  font: 700 1.2rem/1.3 "Cinzel", serif;
+  color: var(--gold-bright);
+  margin: 0;
+  letter-spacing: .02em;
+}
+
+.card .blurb{
+  margin: 0;
+  color: var(--text);
+  font-size: .95rem;
+  line-height: 1.55;
+  flex: 1;
+}
+
+/* ============================================================
+   CTA ROW
+   ============================================================ */
+.cta-row{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: .25rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary{
+  display: inline-block;
+  padding: .55rem 1rem;
+  background: linear-gradient(180deg, var(--accent), #b85a26);
+  color: #fff8e7;
+  font: 500 .9rem/1 "Inter", sans-serif;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  border: 1px solid var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  transition: filter .15s ease, transform .15s ease;
+}
+.btn-primary:hover{
+  filter: brightness(1.12);
+  text-decoration: none;
+  color: #fff8e7;
+}
+.btn-primary:active{ transform: translateY(1px); }
+
+.btn-link{
+  font: 500 .85rem/1 "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--muted);
+  border-bottom: 1px dotted var(--gold-dim);
+  padding-bottom: 1px;
+}
+.btn-link:hover{
+  color: var(--gold-bright);
+  text-decoration: none;
+  border-bottom-color: var(--gold-bright);
+}
+
+/* ============================================================
+   CARD META PILLS
+   ============================================================ */
+.card-meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  padding-top: .85rem;
+  margin-top: auto;
+  border-top: 1px dashed var(--gold-dim);
+}
+
+.pill{
+  font: 500 .68rem/1 "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  padding: .35rem .55rem;
+  border: 1px solid var(--gold-dim);
+  color: var(--muted);
+  background: rgba(255,255,255,.02);
+}
+.pill-mine{
+  color: var(--gold-bright);
+  border-color: var(--gold);
+  background: rgba(200,164,92,.08);
+}
+.pill-region{ /* base */ }
+.pill-naeu{
+  color: #9fc7f4;
+  border-color: rgba(120,170,235,.45);
+  background: rgba(120,170,235,.08);
+}
+.pill-kr{
+  color: #f0a585;
+  border-color: rgba(200,122,74,.55);
+  background: rgba(200,122,74,.10);
+}
+.pill-global{
+  color: #b5d8c0;
+  border-color: rgba(140,210,170,.40);
+  background: rgba(140,210,170,.06);
+}
+
+/* ============================================================
+   KR REGION ACCENT — copper inner line instead of gold
+   ============================================================ */
+.card[data-region="kr"]{
+  box-shadow:
+    inset 0 0 0 3px var(--bg),
+    inset 0 0 0 4px var(--copper);
+}
+.card[data-region="kr"]:hover{
+  box-shadow:
+    inset 0 0 0 3px var(--bg),
+    inset 0 0 0 4px #e29766,
+    0 0 28px rgba(226,151,102,.20);
+}
+.card[data-region="kr"]::before,
+.card[data-region="kr"]::after{
+  border-color: var(--copper);
+  background:
+    linear-gradient(45deg, transparent 42%, var(--copper) 42% 58%, transparent 58%),
+    var(--bg);
+}
+
+/* ============================================================
+   TRANSLATION TILES — big tiles with prominent date
+   ============================================================ */
+.translation-grid-a{
+  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+}
+.translation-card{
+  padding: 1.75rem 1.6rem 1.4rem;
+}
+.translation-card .t-header{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.translation-card .t-title{
+  font-size: 1.35rem;
+  flex: 1;
+  min-width: 0;
+}
+.translation-card .t-date{
+  font: 500 .8rem/1 "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--gold-bright);
+  padding: .35rem .6rem;
+  border: 1px solid var(--gold-dim);
+  white-space: nowrap;
+}
+.translation-card .blurb{
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer{
+  border-top: 1px solid var(--gold-dim);
+  padding: 2rem var(--gutter);
+  margin-top: 3rem;
+}
+.footer-inner{
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: .85rem;
+}
+.footer-credit{ margin: 0; }
+.footer-links{ font-size: .85rem; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 640px){
+  section > h2::before,
+  section > h2::after{ display: none; }
+  section > h2{ justify-content: center; }
+  .card{ padding: 1.25rem 1.1rem 1rem; }
+  .translation-card .t-header{ flex-direction: column; align-items: flex-start; gap: .35rem; }
+  .translation-card .t-title{ font-size: 1.15rem; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .card{ transition: none; }
+  .card:hover{ transform: none; }
+}
+
+/* Visible focus rings for keyboard nav */
+a:focus-visible,
+.btn-primary:focus-visible,
+.btn-link:focus-visible{
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
