@@ -27,7 +27,6 @@ Drop a new `<article>` into the relevant `<section>` in `index.html`. The skelet
     <a class="btn-primary" href="https://thejunglewalrus.github.io/repo-name/">
       Open tool <span aria-hidden="true">&rarr;</span>
     </a>
-    <a class="btn-link" href="https://github.com/thejunglewalrus/repo-name">GitHub</a>
   </div>
   <footer class="card-meta">
     <span class="pill pill-mine">Mine</span>
