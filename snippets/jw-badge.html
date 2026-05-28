@@ -1,0 +1,77 @@
+<!--
+  Junglewalrus "back to hub" badge.
+
+  Drop-in HTML+CSS snippet — paste anywhere inside <body> of any tool that
+  links from https://thejunglewalrus.github.io/. Self-contained: no external
+  CSS, no JS, walrus icon is inline SVG. Uses hub colors (gold #c8a45c on
+  dark #0e1320) so it reads as a return-link no matter what palette the
+  host tool uses.
+
+  Pinned `position: fixed` to top-right of viewport. Compact 44px circle by
+  default, expands on hover to reveal "More tools" label. Stays out of the
+  way of the tool's existing header.
+
+  React / single-file projects (hell-rewards-picker): paste straight into
+  index.html / index.template.html below <body>.
+  SvelteKit / framework projects: paste into the root layout file.
+-->
+
+<a href="https://thejunglewalrus.github.io/" target="_blank" rel="noopener" class="jw-badge"
+   title="More Lost Ark tools by Junglewalrus"
+   aria-label="More Lost Ark tools by Junglewalrus">
+  <svg viewBox="0 0 64 64" aria-hidden="true">
+    <rect width="64" height="64" fill="#0e1320"/>
+    <g fill="#c8a45c">
+      <ellipse cx="32" cy="30" rx="14" ry="11"/>
+      <circle cx="26" cy="27" r="1.8" fill="#0e1320"/>
+      <circle cx="38" cy="27" r="1.8" fill="#0e1320"/>
+      <path d="M28 36 L26 48 L29 48 L30 36 Z"/>
+      <path d="M36 36 L38 48 L35 48 L34 36 Z"/>
+      <ellipse cx="32" cy="35" rx="4" ry="2.5" fill="#f0d27a"/>
+    </g>
+  </svg>
+  <span class="jw-badge-label">More tools</span>
+</a>
+
+<style>
+  .jw-badge {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    width: 44px;
+    padding: 4px;
+    border-radius: 999px;
+    background: #0e1320;
+    border: 1px solid #c8a45c;
+    color: #c8a45c;
+    text-decoration: none;
+    overflow: hidden;
+    transition: width 0.22s ease-out, background 0.15s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    box-sizing: border-box;
+  }
+  .jw-badge svg { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; }
+  .jw-badge-label {
+    white-space: nowrap;
+    font: 600 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    padding-right: 10px;
+    transition: opacity 0.12s 0.1s ease-in;
+  }
+  .jw-badge:hover, .jw-badge:focus-visible {
+    width: 162px;
+    background: rgba(14, 19, 32, 0.96);
+    text-decoration: none;
+  }
+  .jw-badge:hover .jw-badge-label,
+  .jw-badge:focus-visible .jw-badge-label { opacity: 1; }
+  @media (max-width: 480px) {
+    .jw-badge { top: 8px; right: 8px; }
+  }
+</style>
