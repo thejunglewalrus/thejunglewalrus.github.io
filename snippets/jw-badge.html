@@ -2,14 +2,14 @@
   Junglewalrus "back to hub" badge.
 
   Drop-in HTML+CSS snippet — paste anywhere inside <body> of any tool that
-  links from https://thejunglewalrus.github.io/. Self-contained: no external
-  CSS, no JS, walrus icon is inline SVG. Uses hub colors (gold #c8a45c on
-  dark #0e1320) so it reads as a return-link no matter what palette the
-  host tool uses.
+  links from https://thejunglewalrus.github.io/. Self-contained (no JS).
+  Walrus image is served from the hub repo's root so updates propagate to
+  every tool automatically.
 
-  Pinned `position: fixed` to top-right of viewport. Compact 44px circle by
-  default, expands on hover to reveal "More tools" label. Stays out of the
-  way of the tool's existing header.
+  Pinned `position: fixed` to bottom-right of viewport. Compact 56px circle
+  by default, expands on hover to reveal "More tools" label. Bottom-right
+  was chosen over top-right because most tools already have their own
+  header content top-right (socials, GitHub links, etc).
 
   React / single-file projects (hell-rewards-picker): paste straight into
   index.html / index.template.html below <body>.
@@ -19,31 +19,21 @@
 <a href="https://thejunglewalrus.github.io/" target="_blank" rel="noopener" class="jw-badge"
    title="More Lost Ark tools by Junglewalrus"
    aria-label="More Lost Ark tools by Junglewalrus">
-  <svg viewBox="0 0 64 64" aria-hidden="true">
-    <rect width="64" height="64" fill="#0e1320"/>
-    <g fill="#c8a45c">
-      <ellipse cx="32" cy="30" rx="14" ry="11"/>
-      <circle cx="26" cy="27" r="1.8" fill="#0e1320"/>
-      <circle cx="38" cy="27" r="1.8" fill="#0e1320"/>
-      <path d="M28 36 L26 48 L29 48 L30 36 Z"/>
-      <path d="M36 36 L38 48 L35 48 L34 36 Z"/>
-      <ellipse cx="32" cy="35" rx="4" ry="2.5" fill="#f0d27a"/>
-    </g>
-  </svg>
+  <img src="https://thejunglewalrus.github.io/walrus.png" alt="" width="48" height="48" />
   <span class="jw-badge-label">More tools</span>
 </a>
 
 <style>
   .jw-badge {
     position: fixed;
-    top: 14px;
-    right: 14px;
+    bottom: 16px;
+    right: 16px;
     z-index: 1000;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    height: 44px;
-    width: 44px;
+    height: 56px;
+    width: 56px;
     padding: 4px;
     border-radius: 999px;
     background: #0e1320;
@@ -52,26 +42,32 @@
     text-decoration: none;
     overflow: hidden;
     transition: width 0.22s ease-out, background 0.15s;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
     box-sizing: border-box;
   }
-  .jw-badge svg { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; }
+  .jw-badge img {
+    width: 48px; height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
   .jw-badge-label {
     white-space: nowrap;
-    font: 600 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     letter-spacing: 0.02em;
     opacity: 0;
-    padding-right: 10px;
+    padding-right: 14px;
     transition: opacity 0.12s 0.1s ease-in;
   }
   .jw-badge:hover, .jw-badge:focus-visible {
-    width: 162px;
+    width: 178px;
     background: rgba(14, 19, 32, 0.96);
     text-decoration: none;
   }
   .jw-badge:hover .jw-badge-label,
   .jw-badge:focus-visible .jw-badge-label { opacity: 1; }
   @media (max-width: 480px) {
-    .jw-badge { top: 8px; right: 8px; }
+    .jw-badge { bottom: 10px; right: 10px; }
   }
 </style>
