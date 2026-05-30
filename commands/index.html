@@ -83,96 +83,8 @@
           <tr>
             <td class="cmd-trigger-cell"><code class="cmd-trigger">!give @user &lt;amount&gt;</code><div class="cmd-aliases">also: <code>!transfer</code>, <code>!givepoints</code></div></td>
             <td class="cmd-desc">
-              Send some of your balance to another viewer. Amount: 100 / 50% / 1/2 / all.
+              Send some of your balance to another viewer. Amount accepts the same formats as gambling (numbers with commas, 1k/1m, 50%, 1/2, half, all).
               
-              
-            </td>
-          </tr>
-        
-      </tbody>
-    </table>
-  </section>
-
-
-  <section class="cmd-group">
-    <h2>Gambling</h2>
-    <p class="group-blurb">Bet formats: <code>100</code> raw, <code>1k</code>/<code>1m</code> denominations, <code>50%</code>/<code>.5%</code> percent of balance, <code>1/2</code> fraction, or <code>all</code>. Minimum bet across all gambling commands is <strong>100</strong> walrus martinis.</p>
-    <table class="cmd-table">
-      <tbody>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!slots &lt;bet&gt;</code><div class="cmd-aliases">also: <code>!slot</code>, <code>!slotmachine</code>, <code>!sm</code>, <code>!smp</code></div></td>
-            <td class="cmd-desc">
-              Three-reel slot machine using top 7tv emotes. Weighted by chat-usage count (common emotes spin more often, rare ones less). ~103% RTP, very high variance — pair pays nothing, jackpots are huge.
-              <table class="payout-table"><tbody><tr><td class="payout-outcome">3 of a kind</td><td class="payout-value">47x – 215x bet (per-symbol, see table)</td></tr><tr><td class="payout-outcome">2 of a kind</td><td class="payout-value">no payout (lose bet) — visual near-miss only</td></tr><tr><td class="payout-outcome">no match</td><td class="payout-value">lose bet</td></tr></tbody></table>
-              
-    <details class="symbol-details">
-      <summary>3-of-a-kind multiplier per symbol</summary>
-      <table class="symbol-table"><thead><tr><th>#</th><th>Symbol</th><th>Jackpot</th></tr></thead><tbody><tr><td class="sym-rank">1</td><td class="sym-name"><code>that</code></td><td class="sym-mult">47x</td></tr><tr><td class="sym-rank">2</td><td class="sym-name"><code>om</code></td><td class="sym-mult">63x</td></tr><tr><td class="sym-rank">3</td><td class="sym-name"><code>!gamble</code></td><td class="sym-mult">74x</td></tr><tr><td class="sym-rank">4</td><td class="sym-name"><code>oh</code></td><td class="sym-mult">104x</td></tr><tr><td class="sym-rank">5</td><td class="sym-name"><code>mhm</code></td><td class="sym-mult">132x</td></tr><tr><td class="sym-rank">6</td><td class="sym-name"><code>Saddi</code></td><td class="sym-mult">147x</td></tr><tr><td class="sym-rank">7</td><td class="sym-name"><code>there</code></td><td class="sym-mult">156x</td></tr><tr><td class="sym-rank">8</td><td class="sym-name"><code>xdd</code></td><td class="sym-mult">175x</td></tr><tr><td class="sym-rank">9</td><td class="sym-name"><code>LOL</code></td><td class="sym-mult">192x</td></tr><tr><td class="sym-rank">10</td><td class="sym-name"><code>milla</code></td><td class="sym-mult">215x</td></tr><tr><td class="sym-rank">11</td><td class="sym-name"><code>hi</code></td><td class="sym-mult">215x</td></tr><tr><td class="sym-rank">12</td><td class="sym-name"><code>um</code></td><td class="sym-mult">215x</td></tr></tbody></table>
-    </details>
-  
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!gamble &lt;bet&gt; [heads|tails]</code></td>
-            <td class="cmd-desc">
-              Fair 50/50 coin flip. Optional second arg lets you call which side wins; if omitted, heads wins. 100% RTP.
-              <table class="payout-table"><tbody><tr><td class="payout-outcome">Win</td><td class="payout-value">2x bet (net +1x)</td></tr><tr><td class="payout-outcome">Lose</td><td class="payout-value">lose bet</td></tr></tbody></table>
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!duel @user &lt;bet&gt;</code></td>
-            <td class="cmd-desc">
-              1v1 challenge. Target has 60s to !accept or !decline. Both players must have enough balance to cover the stake.
-              <table class="payout-table"><tbody><tr><td class="payout-outcome">Win</td><td class="payout-value">take 1x stake from opponent (net +bet)</td></tr><tr><td class="payout-outcome">Lose</td><td class="payout-value">opponent takes your stake (net -bet)</td></tr><tr><td class="payout-outcome">Expired/declined</td><td class="payout-value">no stake changes hands</td></tr></tbody></table>
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!accept</code></td>
-            <td class="cmd-desc">
-              Accept a duel against you. Winner takes the stake.
-              
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!decline</code><div class="cmd-aliases">also: <code>!deny</code></div></td>
-            <td class="cmd-desc">
-              Decline a pending duel.
-              
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!cancelduel</code></td>
-            <td class="cmd-desc">
-              Cancel your outgoing duel challenge.
-              
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!heist &lt;bet&gt;</code></td>
-            <td class="cmd-desc">
-              Community heist. First call opens a 60s window. Subsequent calls join the pot. Each participant rolls 50/50 independently when the timer ends. One heist at a time. ~100% RTP per participant.
-              <table class="payout-table"><tbody><tr><td class="payout-outcome">Survive (50%)</td><td class="payout-value">2x stake back (net +bet)</td></tr><tr><td class="payout-outcome">Die (50%)</td><td class="payout-value">lose stake</td></tr></tbody></table>
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!roulette &lt;bet&gt;</code></td>
-            <td class="cmd-desc">
-              Russian roulette with timeouts. 100% point-RTP (the timeout is the real cost).
-              <table class="payout-table"><tbody><tr><td class="payout-outcome">*click* (5/6)</td><td class="payout-value">1.2x bet (net +0.2x)</td></tr><tr><td class="payout-outcome">BANG (1/6)</td><td class="payout-value">lose bet + 60s Twitch timeout</td></tr></tbody></table>
               
             </td>
           </tr>
@@ -280,39 +192,10 @@
             </td>
           </tr>
         
-      </tbody>
-    </table>
-  </section>
-
-
-  <section class="cmd-group">
-    <h2>Broadcaster-only</h2>
-    <p class="group-blurb">Restricted to the broadcaster. Mods do NOT have access — these mint or overwrite balances arbitrarily.</p>
-    <table class="cmd-table">
-      <tbody>
-        
           <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!addpoints @user &lt;n&gt;</code><div class="cmd-aliases">also: <code>!bonus</code></div></td>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!vanish</code></td>
             <td class="cmd-desc">
-              Award martinis to someone.
-              
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!removepoints @user &lt;n&gt;</code></td>
-            <td class="cmd-desc">
-              Subtract martinis from someone (clamped at zero).
-              
-              
-            </td>
-          </tr>
-        
-          <tr>
-            <td class="cmd-trigger-cell"><code class="cmd-trigger">!setpoints @user &lt;n&gt;</code></td>
-            <td class="cmd-desc">
-              Set someone’s balance to an exact value.
+              Give yourself a 1-second timeout (a quick &quot;vanish&quot; from chat).
               
               
             </td>
@@ -370,9 +253,153 @@
   </section>
 
 
+  <section class="cmd-group">
+    <h2>Gambling</h2>
+    <p class="group-blurb">Bet formats: <code>100</code> raw, <code>1,000</code> with commas, <code>1k</code>/<code>1m</code>/<code>1b</code> denominations, <code>50%</code>/<code>.5%</code> percent of balance, <code>1/2</code> fraction, word fractions like <code>half</code>/<code>quarter</code>/<code>tenth</code>, or <code>all</code>/<code>everything</code>. Minimum bet across all gambling commands is <strong>100</strong> walrus martinis. The broadcaster can open or close the casino with <code>!walrusino open|close</code> — while closed, every gambling command refuses.</p>
+    <table class="cmd-table">
+      <tbody>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!slots &lt;bet&gt;</code><div class="cmd-aliases">also: <code>!slot</code>, <code>!slotmachine</code>, <code>!sm</code>, <code>!smp</code></div></td>
+            <td class="cmd-desc">
+              Three-reel slot machine using top 7tv emotes. Weighted by chat-usage count (common emotes spin more often, rare ones less). ~103% RTP, very high variance — pair pays nothing, jackpots are huge.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">3 of a kind</td><td class="payout-value">47x – 215x bet (per-symbol, see table)</td></tr><tr><td class="payout-outcome">2 of a kind</td><td class="payout-value">no payout (lose bet) — visual near-miss only</td></tr><tr><td class="payout-outcome">no match</td><td class="payout-value">lose bet</td></tr></tbody></table>
+              
+    <details class="symbol-details">
+      <summary>3-of-a-kind multiplier per symbol</summary>
+      <table class="symbol-table"><thead><tr><th>#</th><th>Symbol</th><th>Jackpot</th></tr></thead><tbody><tr><td class="sym-rank">1</td><td class="sym-name"><code>that</code></td><td class="sym-mult">47x</td></tr><tr><td class="sym-rank">2</td><td class="sym-name"><code>om</code></td><td class="sym-mult">63x</td></tr><tr><td class="sym-rank">3</td><td class="sym-name"><code>!gamble</code></td><td class="sym-mult">74x</td></tr><tr><td class="sym-rank">4</td><td class="sym-name"><code>oh</code></td><td class="sym-mult">104x</td></tr><tr><td class="sym-rank">5</td><td class="sym-name"><code>mhm</code></td><td class="sym-mult">132x</td></tr><tr><td class="sym-rank">6</td><td class="sym-name"><code>Saddi</code></td><td class="sym-mult">147x</td></tr><tr><td class="sym-rank">7</td><td class="sym-name"><code>there</code></td><td class="sym-mult">156x</td></tr><tr><td class="sym-rank">8</td><td class="sym-name"><code>xdd</code></td><td class="sym-mult">175x</td></tr><tr><td class="sym-rank">9</td><td class="sym-name"><code>LOL</code></td><td class="sym-mult">192x</td></tr><tr><td class="sym-rank">10</td><td class="sym-name"><code>milla</code></td><td class="sym-mult">215x</td></tr><tr><td class="sym-rank">11</td><td class="sym-name"><code>hi</code></td><td class="sym-mult">215x</td></tr><tr><td class="sym-rank">12</td><td class="sym-name"><code>um</code></td><td class="sym-mult">215x</td></tr></tbody></table>
+    </details>
+  
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!gamble &lt;bet&gt; [heads|tails]</code><div class="cmd-aliases">also: <code>!gamba</code></div></td>
+            <td class="cmd-desc">
+              Fair 50/50 coin flip. Optional second arg lets you call which side wins; if omitted, heads wins. 100% RTP. !gamba with no amount defaults to going all-in.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">Win</td><td class="payout-value">2x bet (net +1x)</td></tr><tr><td class="payout-outcome">Lose</td><td class="payout-value">lose bet</td></tr></tbody></table>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!duel @user &lt;bet&gt;</code></td>
+            <td class="cmd-desc">
+              1v1 challenge. Target has 60s to !accept or !decline. Both players must have enough balance to cover the stake.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">Win</td><td class="payout-value">take 1x stake from opponent (net +bet)</td></tr><tr><td class="payout-outcome">Lose</td><td class="payout-value">opponent takes your stake (net -bet)</td></tr><tr><td class="payout-outcome">Expired/declined</td><td class="payout-value">no stake changes hands</td></tr></tbody></table>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!accept</code></td>
+            <td class="cmd-desc">
+              Accept a duel against you. Winner takes the stake.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!decline</code><div class="cmd-aliases">also: <code>!deny</code></div></td>
+            <td class="cmd-desc">
+              Decline a pending duel.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!cancelduel</code></td>
+            <td class="cmd-desc">
+              Cancel your outgoing duel challenge.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!heist &lt;bet&gt;</code></td>
+            <td class="cmd-desc">
+              Community heist. First call opens a 60s window. Subsequent calls join the pot. Each participant rolls 50/50 independently when the timer ends. One heist at a time. ~100% RTP per participant.
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">Survive (50%)</td><td class="payout-value">2x stake back (net +bet)</td></tr><tr><td class="payout-outcome">Die (50%)</td><td class="payout-value">lose stake</td></tr></tbody></table>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!roulette &lt;bet&gt;</code></td>
+            <td class="cmd-desc">
+              Russian roulette with timeouts. 100% point-RTP (the timeout is the real cost).
+              <table class="payout-table"><tbody><tr><td class="payout-outcome">*click* (5/6)</td><td class="payout-value">1.2x bet (net +0.2x)</td></tr><tr><td class="payout-outcome">BANG (1/6)</td><td class="payout-value">lose bet + 60s Twitch timeout</td></tr></tbody></table>
+              
+            </td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </section>
+
+
+  <section class="cmd-group">
+    <h2>Broadcaster-only</h2>
+    <p class="group-blurb">Restricted to the broadcaster. Mods do NOT have access — these mint or overwrite balances arbitrarily, or gate the gambling room.</p>
+    <table class="cmd-table">
+      <tbody>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!walrusino open|close</code></td>
+            <td class="cmd-desc">
+              Open or close the gambling room. When closed, all gambling commands refuse with a one-line &quot;casino closed&quot; notice. State persists across bot restarts.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!addpoints @user &lt;n&gt;</code><div class="cmd-aliases">also: <code>!bonus</code></div></td>
+            <td class="cmd-desc">
+              Award martinis to someone.
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!addpoints all &lt;n&gt;</code></td>
+            <td class="cmd-desc">
+              Award &lt;n&gt; martinis to every current chatter (uses the Twitch chatters API).
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!removepoints @user &lt;n&gt;</code></td>
+            <td class="cmd-desc">
+              Subtract martinis from someone (clamped at zero).
+              
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="cmd-trigger-cell"><code class="cmd-trigger">!setpoints @user &lt;n&gt;</code></td>
+            <td class="cmd-desc">
+              Set someone’s balance to an exact value.
+              
+              
+            </td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </section>
+
+
   <section class="cmd-group" id="customs">
     <h2>Custom commands</h2>
-    <p class="group-blurb">Link aliases and info shortcuts (48 total).</p>
+    <p class="group-blurb">Link aliases and info shortcuts (53 total).</p>
     <table class="cmd-table cmd-table-customs">
       <tbody>
         
@@ -437,6 +464,16 @@
             </tr>
           
             <tr>
+              <td class="cmd-trigger-cell"><code class="cmd-trigger">!furpipe</code></td>
+              <td class="cmd-desc">@Dracima recommends this one https://i.etsystatic.com/5841464/r/il/5689eb/3503028808/il_680x540.3503028808_g9hx.jpg</td>
+            </tr>
+          
+            <tr>
+              <td class="cmd-trigger-cell"><code class="cmd-trigger">!github</code><div class="cmd-aliases">also: <code>!link</code>, <code>!links</code></div></td>
+              <td class="cmd-desc">Public projects (bots, Lost Ark tools, etc.): https://github.com/thejunglewalrus</td>
+            </tr>
+          
+            <tr>
               <td class="cmd-trigger-cell"><code class="cmd-trigger">!github</code><div class="cmd-aliases">also: <code>!tools</code>, <code>!hub</code>, <code>!site</code></div></td>
               <td class="cmd-desc">All my Lost Ark tools, calculators, and KR translations: https://thejunglewalrus.github.io/</td>
             </tr>
@@ -462,7 +499,7 @@
             </tr>
           
             <tr>
-              <td class="cmd-trigger-cell"><code class="cmd-trigger">!keys</code></td>
+              <td class="cmd-trigger-cell"><code class="cmd-trigger">!keys</code><div class="cmd-aliases">also: <code>!hell</code>, <code>!key</code></div></td>
               <td class="cmd-desc"> https://thejunglewalrus.github.io/hell-rewards-picker/</td>
             </tr>
           
@@ -504,6 +541,11 @@
             <tr>
               <td class="cmd-trigger-cell"><code class="cmd-trigger">!newnexus</code></td>
               <td class="cmd-desc">The dev version of lost ark nexus can be found here (be nice some are WIP) https://nexus-guide-site.pages.dev/</td>
+            </tr>
+          
+            <tr>
+              <td class="cmd-trigger-cell"><code class="cmd-trigger">!oohaw</code></td>
+              <td class="cmd-desc">wahoo</td>
             </tr>
           
             <tr>
@@ -553,7 +595,7 @@
           
             <tr>
               <td class="cmd-trigger-cell"><code class="cmd-trigger">!roster</code></td>
-              <td class="cmd-desc">https://uwuowo.mathi.moe/character/NA/Kingofareachat/roster</td>
+              <td class="cmd-desc">Both rosters are the same account. Main (NAE): https://uwuowo.mathi.moe/character/NA/Kingofareachat/roster | Alt (NAW): https://lostark.bible/character/NA/Wunglejalrus/roster</td>
             </tr>
           
             <tr>
@@ -597,8 +639,18 @@
             </tr>
           
             <tr>
+              <td class="cmd-trigger-cell"><code class="cmd-trigger">!tierlist</code></td>
+              <td class="cmd-desc">Captain Jack &amp; Powdersnow&#39;s joint KR tier list (May 22, 2026) — English translation + bilingual transcript with speaker IDs: https://thejunglewalrus.github.io/captainjack-powdersnow-may22-tierlist/</td>
+            </tr>
+          
+            <tr>
               <td class="cmd-trigger-cell"><code class="cmd-trigger">!toestory</code></td>
               <td class="cmd-desc">&quot;in your class&quot;</td>
+            </tr>
+          
+            <tr>
+              <td class="cmd-trigger-cell"><code class="cmd-trigger">!wahoo</code></td>
+              <td class="cmd-desc">oohaw</td>
             </tr>
           
             <tr>
@@ -623,7 +675,7 @@
 </main>
 
 <footer class="site-footer">
-  <p>Generated 2026-05-21T15:56:12.215Z.</p>
+  <p>Generated 2026-05-30T23:34:25.104Z.</p>
 </footer>
 
 </body>
