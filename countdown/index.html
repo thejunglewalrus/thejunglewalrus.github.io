@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>countdown</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+    overflow: hidden;
+  }
+  .clock {
+    color: #ff1f1f;
+    font-size: 132px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    text-align: center;
+    padding: 24px 32px;
+    text-shadow:
+      0 0 8px  #ff0000,
+      0 0 18px #ff0000,
+      0 0 38px #ff0000,
+      0 0 70px #b00000;
+    user-select: none;
+  }
+  .clock.dead {
+    animation: flicker 3.8s infinite;
+  }
+  @keyframes flicker {
+    0%, 90%, 100% { opacity: 1; }
+    91%, 93%, 95% { opacity: 0.18; }
+    92%, 94%, 96% { opacity: 1; }
+  }
+  .label {
+    color: #d99393;
+    font-size: 18px;
+    letter-spacing: 12px;
+    text-align: center;
+    text-shadow: 0 0 6px #ff0000;
+    margin-top: -8px;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+<div class="clock" id="c">00:00:00:00</div>
+<div class="label">DAYS &middot; HOURS &middot; MINUTES &middot; SECONDS</div>
+<script>
+  const params = new URLSearchParams(location.search);
+  const targetIso = params.get('t') || '2027-02-04T16:23:28Z';
+  const target = new Date(targetIso);
+  const el = document.getElementById('c');
+  const pad = (n, w = 2) => String(Math.max(0, Math.floor(n))).padStart(w, '0');
+  function tick() {
+    const ms = target.getTime() - Date.now();
+    let remain = ms;
+    let dead = false;
+    if (!isFinite(ms) || ms <= 0) {
+      remain = 0;
+      dead = true;
+    }
+    const days  = Math.floor(remain / 86400000);
+    const hours = Math.floor((remain % 86400000) / 3600000);
+    const mins  = Math.floor((remain % 3600000) / 60000);
+    const secs  = Math.floor((remain % 60000) / 1000);
+    el.textContent = `${pad(days, 3)}:${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    el.classList.toggle('dead', dead);
+  }
+  tick();
+  setInterval(tick, 250);
+</script>
+</body>
+</html>
