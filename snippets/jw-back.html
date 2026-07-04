@@ -1,0 +1,91 @@
+<!--
+  Junglewalrus "back to toolbox" button.
+
+  Drop-in HTML+CSS snippet — paste anywhere inside <body> of any tool that
+  lives under https://thejunglewalrus.github.io/. Self-contained (no JS, no
+  external assets: the left-arrow is an inline SVG so it reads instantly as
+  "back" and never waits on a network request).
+
+  Pinned `position: fixed` to the TOP-LEFT of the viewport — where users
+  reach for a back control. Links to the hub root in the SAME tab (no
+  target=_blank): this is a back button, not a "more tools" cross-link, so
+  it should replace the current page rather than spawn a new one.
+
+  Deliberately more compact than jw-badge (40px pill vs 56px circle): tools
+  already own their top-of-page header/<h1>, so the back button stays light
+  and out of the way. It expands on hover / keyboard focus to reveal a
+  "Toolbox" label, mirroring the jw-badge interaction so the two read as one
+  family (same #0e1320 fill, #c8a45c gold border/text, rounded pill, shadow).
+
+  Sibling to snippets/jw-badge.html — pair them: jw-back top-left, jw-badge
+  bottom-right.
+
+  React / single-file projects (hell-rewards-picker): paste straight into
+  index.html / index.template.html below <body>.
+  SvelteKit / framework projects: paste into the root layout file.
+-->
+
+<a href="https://thejunglewalrus.github.io/" class="jw-back"
+   title="Back to the Junglewalrus toolbox"
+   aria-label="Back to the Junglewalrus toolbox">
+  <svg class="jw-back-icon" viewBox="0 0 24 24" width="20" height="20"
+       fill="none" stroke="currentColor" stroke-width="2.2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+       focusable="false">
+    <path d="M15 5l-7 7 7 7" />
+  </svg>
+  <span class="jw-back-label">Toolbox</span>
+</a>
+
+<style>
+  .jw-back {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    border-radius: 999px;
+    background: #0e1320;
+    border: 1px solid #c8a45c;
+    color: #c8a45c;
+    text-decoration: none;
+    overflow: hidden;
+    box-sizing: border-box;
+    line-height: 1;
+    transition: width 0.22s ease-out, background 0.15s;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+  }
+  .jw-back-icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 40px;
+    display: block;
+    margin: 0 auto;
+  }
+  .jw-back-label {
+    white-space: nowrap;
+    font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    padding-right: 16px;
+    transition: opacity 0.12s 0.1s ease-in;
+  }
+  .jw-back:hover, .jw-back:focus-visible {
+    width: 128px;
+    background: rgba(14, 19, 32, 0.96);
+    text-decoration: none;
+  }
+  .jw-back:focus-visible {
+    outline: 2px solid #c8a45c;
+    outline-offset: 2px;
+  }
+  .jw-back:hover .jw-back-label,
+  .jw-back:focus-visible .jw-back-label { opacity: 1; }
+  @media (max-width: 480px) {
+    .jw-back { top: 10px; left: 10px; }
+  }
+</style>
