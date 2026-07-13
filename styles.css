@@ -284,6 +284,11 @@ section > h2::after { background: linear-gradient(90deg, var(--gold-dim), transp
   border-color: rgba(140,210,170,.40);
   background: rgba(140,210,170,.06);
 }
+.pill-ru{
+  color: #e2939c;
+  border-color: rgba(214,110,122,.50);
+  background: rgba(214,110,122,.09);
+}
 
 /* ============================================================
    KR REGION ACCENT — copper inner line instead of gold
@@ -304,6 +309,28 @@ section > h2::after { background: linear-gradient(90deg, var(--gold-dim), transp
   border-color: var(--copper);
   background:
     linear-gradient(45deg, transparent 42%, var(--copper) 42% 58%, transparent 58%),
+    var(--bg);
+}
+
+/* ============================================================
+   RU REGION ACCENT — rose inner line instead of gold
+   ============================================================ */
+.card[data-region="ru"]{
+  box-shadow:
+    inset 0 0 0 3px var(--bg),
+    inset 0 0 0 4px #b8636f;
+}
+.card[data-region="ru"]:hover{
+  box-shadow:
+    inset 0 0 0 3px var(--bg),
+    inset 0 0 0 4px #d6828d,
+    0 0 28px rgba(214,130,141,.20);
+}
+.card[data-region="ru"]::before,
+.card[data-region="ru"]::after{
+  border-color: #b8636f;
+  background:
+    linear-gradient(45deg, transparent 42%, #b8636f 42% 58%, transparent 58%),
     var(--bg);
 }
 
