@@ -37,6 +37,31 @@ body { background:radial-gradient(1100px 460px at 50% -8%, rgba(155,133,214,.05)
 .dl-csv { color:var(--text3); font-size:.75rem; text-decoration:none; border-bottom:1px dashed var(--border); padding-bottom:1px; transition:color .12s,border-color .12s; }
 .dl-csv:hover { color:var(--gold); border-color:var(--gold-dim); }
 
+/* Grace selector */
+.grace-ctrl { display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;
+  background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:9px 15px; }
+.grace-head { display:flex; align-items:center; gap:5px; color:var(--text2); font-size:.78rem;
+  text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+.grace-head img { width:20px; height:20px; border-radius:4px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+.grace-head span { margin-left:3px; }
+input[type=range]#grace { -webkit-appearance:none; appearance:none; width:190px; height:5px; border-radius:3px;
+  background:linear-gradient(90deg,var(--accent) 0%,var(--accent) var(--fill,0%),var(--surface2) var(--fill,0%));
+  outline:none; cursor:pointer; }
+#grace::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--gold); border:2px solid #1a1a1f; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.5); }
+#grace::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:var(--gold); border:2px solid #1a1a1f; cursor:pointer; }
+#grace:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.grace-read { min-width:120px; font-size:.8rem; font-weight:600; color:var(--gold); font-variant-numeric:tabular-nums; }
+.grace-read.off { color:var(--text3); font-weight:500; }
+.grace-note { color:var(--text3); font-size:.75rem; max-width:680px; text-align:center; text-wrap:balance; padding:0 12px; min-height:1em; }
+.grace-note b { color:var(--accent); }
+
+/* Grace columns are hidden until graces are applied. */
+table:not(.show-graces) .gcol { display:none; }
+.divide-g { border-left:1px solid var(--border); }
+.eff-rate { color:var(--accent); font-weight:600; }
+.v-grace { color:#e0b877; }
+
 /* Table */
 .tbl-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:10px; background:var(--surface); }
 table { width:100%; border-collapse:collapse; font-size:.84rem; min-width:820px; }
@@ -161,7 +186,7 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
   <h1>Lost Ark — Vambrace Honing Cost Chart</h1>
   <img class="palm palm-flip" src="icons/palm.png" alt="" aria-hidden="true">
 </div>
-<p class="subtitle">Per-stage materials for Vambrace honing (완갑 재련) with the "Destiny" material set. Switch between the raw per-tap cost and the average total to reach a success under each pity model.</p>
+<p class="subtitle">Per-stage materials for Vambrace honing (완갑 재련) with the "Destiny" material set. Switch between the raw per-tap cost and the average total to reach a success under each pity model, and add graces to see the effective rate and material savings.</p>
 
 <div class="container">
   <div class="toolbar">
@@ -172,6 +197,20 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
       <button data-model="soft">Expected · Full Pity</button>
     </div>
     <p class="note" id="note"></p>
+
+    <div class="grace-ctrl">
+      <div class="grace-head">
+        <img src="icons/solar_grace.png" alt="Solar Grace">
+        <img src="icons/solar_blessing.png" alt="Solar Blessing">
+        <img src="icons/solar_protection.png" alt="Solar Protection">
+        <span>Graces</span>
+      </div>
+      <input type="range" id="grace" min="0" max="100" step="5" value="0"
+             aria-label="Grace fill — percent of the success-rate cap">
+      <span class="grace-read" id="graceRead">Off</span>
+    </div>
+    <p class="grace-note" id="graceNote"></p>
+
     <a class="dl-csv" href="vambrace_honing_chart.csv" download>Download full data (CSV)</a>
   </div>
 
@@ -195,6 +234,9 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
           <th><span class="ic"><img src="icons/advanced_abidos_fusion_material.png" alt=""><span class="lbl">Adv. Abidos Fusion</span></span></th>
           <th><span class="ic"><img src="icons/gold.png" alt=""><span class="lbl">Gold</span></span></th>
           <th><span class="ic"><img src="icons/silver.png" alt=""><span class="lbl">Silver</span></span></th>
+          <th class="gcol divide-g"><span class="ic"><img src="icons/solar_grace.png" alt=""><span class="lbl">Solar Grace</span></span></th>
+          <th class="gcol"><span class="ic"><img src="icons/solar_blessing.png" alt=""><span class="lbl">Solar Blessing</span></span></th>
+          <th class="gcol"><span class="ic"><img src="icons/solar_protection.png" alt=""><span class="lbl">Solar Protection</span></span></th>
         </tr>
       </thead>
       <tbody id="body"></tbody>
@@ -208,6 +250,9 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
     <span class="item"><img src="icons/guardian_stone_crystal.png" alt="">Guardian Stone Crystal · 운명의 수호석 결정</span>
     <span class="item"><img src="icons/leapstone.png" alt="">Leapstone · 위대한 운명의 돌파석</span>
     <span class="item"><img src="icons/advanced_abidos_fusion_material.png" alt="">Adv. Abidos Fusion · 상급 아비도스 융화 재료</span>
+    <span class="item"><img src="icons/solar_grace.png" alt="">Solar Grace · 태양의 은총</span>
+    <span class="item"><img src="icons/solar_blessing.png" alt="">Solar Blessing · 태양의 축복</span>
+    <span class="item"><img src="icons/solar_protection.png" alt="">Solar Protection · 태양의 가호</span>
   </div>
 
   <div class="footer-credit">
@@ -218,15 +263,44 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
 
 <script src="data.js"></script>
 <script>
-const MATS = ['shard','destr','guard','leap','fusion','gold','silver'];
+const MATS   = ['shard','destr','guard','leap','fusion','gold','silver'];
+const GRACES = ['grace','bless','prot'];
 const VCLASS = { gold:'v-gold', silver:'v-silver', shard:'v-shard' };
 const ICON = { shard:'destiny_shard', destr:'destruction_stone_crystal', guard:'guardian_stone_crystal',
-               leap:'leapstone', fusion:'advanced_abidos_fusion_material', gold:'gold', silver:'silver' };
+               leap:'leapstone', fusion:'advanced_abidos_fusion_material', gold:'gold', silver:'silver',
+               grace:'solar_grace', bless:'solar_blessing', prot:'solar_protection' };
 const LABEL = { shard:'Destiny Shard', destr:'Destr. Stone Crystal', guard:'Guard. Stone Crystal',
-                leap:'Leapstone', fusion:'Adv. Abidos Fusion', gold:'Gold', silver:'Silver' };
+                leap:'Leapstone', fusion:'Adv. Abidos Fusion', gold:'Gold', silver:'Silver',
+                grace:'Solar Grace', bless:'Solar Blessing', prot:'Solar Protection' };
+
+// Honing math constants — verified against the game's ItemEnhanceCommon table.
+const ART_DENOM = 21500;  // Artisan's Energy guarantee threshold (bps); hard pity = ceil(21500/base_bps)
+const FAILF     = 0.1;    // soft failure bonus per fail = base×0.1, stacks up to +base (10 fails)
+// Full-juice bundle per base rate: max Grace/Blessing/Protection that fills the additive cap (= base rate).
+const BUNDLE = { '15.0%':[24,12,4], '10.0%':[24,12,4], '5.0%':[36,18,6], '3.0%':[36,18,6], '1.5%':[48,24,8] };
+
+const baseP  = r => parseFloat(r)/100;
+const pity   = r => Math.ceil(ART_DENOM/Math.round(baseP(r)*10000));
+// Expected honing attempts to one success, given grace fill (0–1 of the cap) and model.
+function expTaps(rate, fill, model){
+  const p0 = baseP(rate), g = p0*fill;              // grace adds flat chance, cap = base
+  if(model==='attempt')  return 1;
+  if(model==='uncapped') return 1/Math.min(1, p0+g);
+  const M = pity(rate);
+  if(model==='hard'){ const p=Math.min(1,p0+g); return (1-Math.pow(1-p,M))/p; }
+  let E=0, reach=1;                                  // soft: rising rate + graces, hard pity at M
+  for(let k=1;k<=M;k++){ E+=reach; if(k===M) break;
+    const pk = Math.min(1, p0 + g + Math.min(p0, p0*FAILF*(k-1)));
+    reach *= (1-pk);
+  }
+  return E;
+}
+const graceCounts = (rate, fill) => (BUNDLE[rate]||[0,0,0]).map(x=>Math.round(x*fill));
+
 // One <td>. data-label + --i (icon url) drive the mobile card layout via CSS.
 function cell(mat, val, opt={}){
-  const cls = [(opt.divide?'divide':''), VCLASS[mat]||''].join(' ').trim();
+  const vclass = opt.vclass !== undefined ? opt.vclass : (VCLASS[mat]||'');
+  const cls = [opt.divide?'divide':'', opt.gcol?'gcol':'', opt.gdiv?'divide-g':'', vclass].filter(Boolean).join(' ');
   const label = opt.label || LABEL[mat];
   return `<td class="${cls}" data-label="${label}" style="--i:url('icons/${ICON[mat]}.png')">${fmt(val)}</td>`;
 }
@@ -239,38 +313,52 @@ const NOTES = {
 function rateColor(r){ const v=parseFloat(r); return v>=15?'var(--green)':v>=10?'var(--amber)':v>=5?'var(--gold)':v>=3?'#d98b6a':'var(--red)'; }
 const fmt = n => n.toLocaleString('en-US');
 
-let model = 'attempt';
+let model = 'attempt', fill = 0;
+const table = document.querySelector('table');
 const body = document.getElementById('body');
 const foot = document.getElementById('foot');
 const note = document.getElementById('note');
 const honeGrp = document.getElementById('honeGrp');
 
 function render(){
+  const showG = fill > 0;
+  table.classList.toggle('show-graces', showG);
   honeGrp.textContent = model==='attempt' ? 'Per Honing Attempt' : 'Expected Total per Success';
+  honeGrp.colSpan = showG ? 10 : 7;
   note.innerHTML = NOTES[model];
+
   const tot = { shard:0, silver:0 };
   const totM = Object.fromEntries(MATS.map(m=>[m,0]));
+  const totG = [0,0,0];
+
   body.innerHTML = DATA.map(row => {
     tot.shard += row.unlock.shard; tot.silver += row.unlock.silver;
-    MATS.forEach(m => totM[m] += row[model][m]);
-    const src = row[model];
+    const taps = expTaps(row.rate, fill, model);
+    const perG = graceCounts(row.rate, fill);
+    const mv = m => Math.round(row.attempt[m]*taps);
+    MATS.forEach(m => totM[m] += mv(m));
+    const gVals = perG.map(c => Math.round(c*taps));
+    gVals.forEach((v,i)=> totG[i]+=v);
+    const cells  = MATS.map((m,i)=>cell(m, mv(m), {divide:i===0})).join('');
+    const gcells = showG ? GRACES.map((gm,i)=>cell(gm, gVals[i], {gcol:true, gdiv:i===0, vclass:'v-grace'})).join('') : '';
     const showTaps = model==='hard' || model==='soft';
-    const cells = MATS.map((m,i)=>cell(m, src[m], {divide:i===0})).join('');
+    const eff = showG ? ` <span class="eff-rate">→ ${Math.min(100, baseP(row.rate)*(1+fill)*100).toFixed(1)}%</span>` : '';
     return `<tr>
       <td class="c-stage" data-label="Stage">+${row.stage}</td>
-      <td class="c-rate" data-label="Success"><span class="rate-val" style="color:${rateColor(row.rate)}">${row.rate}</span>${showTaps?`<span class="taps">≤ ${row.maxAtt} taps</span>`:''}</td>
+      <td class="c-rate" data-label="Success"><span class="rate-val" style="color:${rateColor(row.rate)}">${row.rate}</span>${eff}${showTaps?`<span class="taps">≤ ${pity(row.rate)} taps</span>`:''}</td>
       ${cell('shard', row.unlock.shard, {divide:true, label:'Unlock · Destiny Shard'})}
       ${cell('silver', row.unlock.silver, {label:'Unlock · Silver'})}
-      ${cells}
+      ${cells}${gcells}
     </tr>`;
   }).join('');
 
-  const footCells = MATS.map((m,i)=>cell(m, totM[m], {divide:i===0})).join('');
+  const footCells  = MATS.map((m,i)=>cell(m, totM[m], {divide:i===0})).join('');
+  const footGcells = showG ? GRACES.map((gm,i)=>cell(gm, totG[i], {gcol:true, gdiv:i===0, vclass:'v-grace'})).join('') : '';
   foot.innerHTML = `<tr>
     <td class="c-total" colspan="2" data-label="">Totals · +0 → +25</td>
     ${cell('shard', tot.shard, {divide:true, label:'Unlock · Destiny Shard'})}
     ${cell('silver', tot.silver, {label:'Unlock · Silver'})}
-    ${footCells}
+    ${footCells}${footGcells}
   </tr>`;
 }
 
@@ -280,7 +368,26 @@ document.getElementById('seg').addEventListener('click', e => {
   document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('active', x===b));
   render();
 });
-render();
+
+const grace = document.getElementById('grace');
+const graceRead = document.getElementById('graceRead');
+const graceNote = document.getElementById('graceNote');
+function onGrace(){
+  fill = (+grace.value)/100;
+  grace.style.setProperty('--fill', grace.value+'%');
+  if(fill===0){
+    graceRead.textContent = 'Off';
+    graceRead.classList.add('off');
+    graceNote.innerHTML = '';
+  } else {
+    graceRead.classList.remove('off');
+    graceRead.textContent = `+${grace.value}% of cap` + (fill>=1 ? ' · max' : '');
+    graceNote.innerHTML = `Graces add flat success chance up to the base rate — at <b>max</b> they double your effective rate. Grace/Blessing/Protection used per tap appear as extra columns; base-material totals fall as the effective rate rises. The Artisan hard-pity tap count is unchanged.`;
+  }
+  render();
+}
+grace.addEventListener('input', onGrace);
+onGrace();
 </script>
 
 <!-- Junglewalrus "back to hub" badge — portable snippet from
