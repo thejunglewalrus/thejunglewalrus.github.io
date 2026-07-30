@@ -60,11 +60,25 @@ input[type=range]#grace { -webkit-appearance:none; appearance:none; width:190px;
 table:not(.show-graces) .gcol { display:none; }
 .divide-g { border-left:1px solid var(--border); }
 .eff-rate { color:var(--accent); font-weight:600; }
-.v-grace { color:#e0b877; }
+.v-lava { color:#e0896f; }
+.v-glacier { color:#7fb5e6; }
 
 /* Table */
 .tbl-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:10px; background:var(--surface); }
-table { width:100%; border-collapse:collapse; font-size:.84rem; min-width:820px; }
+
+/* Floating totals bar — a fixed copy of the totals row that stays at the
+   bottom of the viewport (with column widths synced from the table) while the
+   real totals row is scrolled off screen. Desktop only. */
+.totals-bar { position:fixed; left:0; right:0; bottom:0; z-index:40; display:none; overflow:hidden;
+  background:var(--surface2); border-top:2px solid var(--gold-dim); box-shadow:0 -6px 18px -4px rgba(0,0,0,.6); }
+.totals-bar .tb-inner { display:flex; font-size:.84rem; font-weight:700; font-variant-numeric:tabular-nums; }
+.totals-bar .tb-cell { padding:11px 10px; text-align:right; white-space:nowrap; box-sizing:border-box; flex:0 0 auto; overflow:hidden; }
+.totals-bar .tb-label { color:var(--gold); text-align:left; text-transform:uppercase; letter-spacing:.5px; font-size:.72rem; }
+.totals-bar .divide { border-left:1px solid var(--border); }
+.totals-bar .divide-g { border-left:1px solid var(--border); }
+@media (max-width:720px){ .totals-bar { display:none!important; } }
+/* separate + spacing:0 so position:sticky works on the header and totals rows (sticky is broken under border-collapse:collapse) */
+table { width:100%; border-collapse:separate; border-spacing:0; font-size:.84rem; min-width:820px; }
 thead th { position:sticky; top:0; background:var(--surface2); z-index:2; }
 .grp-head th { font-size:.66rem; text-transform:uppercase; letter-spacing:.6px; color:var(--text3);
   padding:8px 10px 4px; font-weight:600; border-bottom:1px solid var(--border); }
@@ -115,7 +129,7 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
   .subtitle { font-size:.82rem; }
   .seg button { padding:8px 13px; font-size:.8rem; }
 
-  .tbl-wrap { overflow:visible; border:0; background:transparent; border-radius:0; }
+  .tbl-wrap { overflow:visible; max-height:none; border:0; background:transparent; border-radius:0; }
   table { min-width:0; display:block; font-size:.9rem; }
   thead { display:none; }
   tbody, tfoot { display:block; }
@@ -126,6 +140,8 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
     box-shadow:0 2px 8px rgba(0,0,0,.25);
   }
   tfoot tr { border-color:var(--gold-dim); box-shadow:0 2px 10px rgba(227,192,105,.08); }
+  /* the mobile totals card is a tall stack — keep it inline, not pinned */
+  tfoot td { position:static; box-shadow:none; }
   tbody tr:hover td { background:none; }
 
   tbody td, tfoot td {
@@ -186,24 +202,21 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
   <h1>Lost Ark — Vambrace Honing Cost Chart</h1>
   <img class="palm palm-flip" src="icons/palm.png" alt="" aria-hidden="true">
 </div>
-<p class="subtitle">Per-stage materials for Vambrace honing (완갑 재련) with the "Destiny" material set. Switch between the raw per-tap cost and the average total to reach a success under each pity model, and add graces to see the effective rate and material savings.</p>
+<p class="subtitle">Per-stage materials for Vambrace honing (완갑 재련) with the "Destiny" material set. Switch between the raw per-tap cost and the average total to reach a success under each pity model, and add breaths to see the effective rate and material savings.</p>
 
 <div class="container">
   <div class="toolbar">
     <div class="seg" id="seg">
       <button data-model="attempt" class="active">Per Attempt</button>
-      <button data-model="uncapped">Expected · No Pity</button>
-      <button data-model="hard">Expected · Hard Pity</button>
       <button data-model="soft">Expected · Full Pity</button>
     </div>
     <p class="note" id="note"></p>
 
     <div class="grace-ctrl">
       <div class="grace-head">
-        <img src="icons/solar_grace.png" alt="Solar Grace">
-        <img src="icons/solar_blessing.png" alt="Solar Blessing">
-        <img src="icons/solar_protection.png" alt="Solar Protection">
-        <span>Graces</span>
+        <img src="icons/lavas_breath.png" alt="Lava's Breath">
+        <img src="icons/glaciers_breath.png" alt="Glacier's Breath">
+        <span>Breaths</span>
       </div>
       <input type="range" id="grace" min="0" max="100" step="5" value="0"
              aria-label="Grace fill — percent of the success-rate cap">
@@ -234,15 +247,15 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
           <th><span class="ic"><img src="icons/advanced_abidos_fusion_material.png" alt=""><span class="lbl">Adv. Abidos Fusion</span></span></th>
           <th><span class="ic"><img src="icons/gold.png" alt=""><span class="lbl">Gold</span></span></th>
           <th><span class="ic"><img src="icons/silver.png" alt=""><span class="lbl">Silver</span></span></th>
-          <th class="gcol divide-g"><span class="ic"><img src="icons/solar_grace.png" alt=""><span class="lbl">Solar Grace</span></span></th>
-          <th class="gcol"><span class="ic"><img src="icons/solar_blessing.png" alt=""><span class="lbl">Solar Blessing</span></span></th>
-          <th class="gcol"><span class="ic"><img src="icons/solar_protection.png" alt=""><span class="lbl">Solar Protection</span></span></th>
+          <th class="gcol divide-g"><span class="ic"><img src="icons/lavas_breath.png" alt=""><span class="lbl">Lava's Breath</span></span></th>
+          <th class="gcol"><span class="ic"><img src="icons/glaciers_breath.png" alt=""><span class="lbl">Glacier's Breath</span></span></th>
         </tr>
       </thead>
       <tbody id="body"></tbody>
       <tfoot id="foot"></tfoot>
     </table>
   </div>
+  <div id="totalsBar" class="totals-bar" aria-hidden="true"><div class="tb-inner"></div></div>
 
   <div class="legend">
     <span class="item"><img src="icons/destiny_shard.png" alt="">Destiny Shard · 운명의 파편</span>
@@ -250,9 +263,8 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
     <span class="item"><img src="icons/guardian_stone_crystal.png" alt="">Guardian Stone Crystal · 운명의 수호석 결정</span>
     <span class="item"><img src="icons/leapstone.png" alt="">Leapstone · 위대한 운명의 돌파석</span>
     <span class="item"><img src="icons/advanced_abidos_fusion_material.png" alt="">Adv. Abidos Fusion · 상급 아비도스 융화 재료</span>
-    <span class="item"><img src="icons/solar_grace.png" alt="">Solar Grace · 태양의 은총</span>
-    <span class="item"><img src="icons/solar_blessing.png" alt="">Solar Blessing · 태양의 축복</span>
-    <span class="item"><img src="icons/solar_protection.png" alt="">Solar Protection · 태양의 가호</span>
+    <span class="item"><img src="icons/lavas_breath.png" alt="">Lava's Breath · 용암의 숨결</span>
+    <span class="item"><img src="icons/glaciers_breath.png" alt="">Glacier's Breath · 빙하의 숨결</span>
   </div>
 
   <div class="footer-credit">
@@ -264,20 +276,20 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
 <script src="data.js"></script>
 <script>
 const MATS   = ['shard','destr','guard','leap','fusion','gold','silver'];
-const GRACES = ['grace','bless','prot'];
-const VCLASS = { gold:'v-gold', silver:'v-silver', shard:'v-shard' };
+const GRACES = ['lava','glacier'];
+const VCLASS = { gold:'v-gold', silver:'v-silver', shard:'v-shard', lava:'v-lava', glacier:'v-glacier' };
 const ICON = { shard:'destiny_shard', destr:'destruction_stone_crystal', guard:'guardian_stone_crystal',
                leap:'leapstone', fusion:'advanced_abidos_fusion_material', gold:'gold', silver:'silver',
-               grace:'solar_grace', bless:'solar_blessing', prot:'solar_protection' };
+               lava:'lavas_breath', glacier:'glaciers_breath' };
 const LABEL = { shard:'Destiny Shard', destr:'Destr. Stone Crystal', guard:'Guard. Stone Crystal',
                 leap:'Leapstone', fusion:'Adv. Abidos Fusion', gold:'Gold', silver:'Silver',
-                grace:'Solar Grace', bless:'Solar Blessing', prot:'Solar Protection' };
+                lava:"Lava's Breath", glacier:"Glacier's Breath" };
 
 // Honing math constants — verified against the game's ItemEnhanceCommon table.
 const ART_DENOM = 21500;  // Artisan's Energy guarantee threshold (bps); hard pity = ceil(21500/base_bps)
 const FAILF     = 0.1;    // soft failure bonus per fail = base×0.1, stacks up to +base (10 fails)
-// Full-juice bundle per base rate: max Grace/Blessing/Protection that fills the additive cap (= base rate).
-const BUNDLE = { '15.0%':[24,12,4], '10.0%':[24,12,4], '5.0%':[36,18,6], '3.0%':[36,18,6], '1.5%':[48,24,8] };
+// Full-juice bundle per base rate: max Lava's + Glacier's Breath per tap (both fill the additive cap = base rate).
+const BUNDLE = { '15.0%':[20,20], '10.0%':[20,20], '5.0%':[20,20], '3.0%':[25,25], '1.5%':[25,25] };
 
 const baseP  = r => parseFloat(r)/100;
 const pity   = r => Math.ceil(ART_DENOM/Math.round(baseP(r)*10000));
@@ -324,7 +336,7 @@ function render(){
   const showG = fill > 0;
   table.classList.toggle('show-graces', showG);
   honeGrp.textContent = model==='attempt' ? 'Per Honing Attempt' : 'Expected Total per Success';
-  honeGrp.colSpan = showG ? 10 : 7;
+  honeGrp.colSpan = showG ? 9 : 7;
   note.innerHTML = NOTES[model];
 
   const tot = { shard:0, silver:0 };
@@ -340,7 +352,7 @@ function render(){
     const gVals = perG.map(c => Math.round(c*taps));
     gVals.forEach((v,i)=> totG[i]+=v);
     const cells  = MATS.map((m,i)=>cell(m, mv(m), {divide:i===0})).join('');
-    const gcells = showG ? GRACES.map((gm,i)=>cell(gm, gVals[i], {gcol:true, gdiv:i===0, vclass:'v-grace'})).join('') : '';
+    const gcells = showG ? GRACES.map((gm,i)=>cell(gm, gVals[i], {gcol:true, gdiv:i===0, vclass:VCLASS[gm]})).join('') : '';
     const showTaps = model==='hard' || model==='soft';
     const eff = showG ? ` <span class="eff-rate">→ ${Math.min(100, baseP(row.rate)*(1+fill)*100).toFixed(1)}%</span>` : '';
     return `<tr>
@@ -353,13 +365,15 @@ function render(){
   }).join('');
 
   const footCells  = MATS.map((m,i)=>cell(m, totM[m], {divide:i===0})).join('');
-  const footGcells = showG ? GRACES.map((gm,i)=>cell(gm, totG[i], {gcol:true, gdiv:i===0, vclass:'v-grace'})).join('') : '';
+  const footGcells = showG ? GRACES.map((gm,i)=>cell(gm, totG[i], {gcol:true, gdiv:i===0, vclass:VCLASS[gm]})).join('') : '';
   foot.innerHTML = `<tr>
     <td class="c-total" colspan="2" data-label="">Totals · +0 → +25</td>
     ${cell('shard', tot.shard, {divide:true, label:'Unlock · Destiny Shard'})}
     ${cell('silver', tot.silver, {label:'Unlock · Silver'})}
     ${footCells}${footGcells}
   </tr>`;
+
+  if (typeof syncBar === 'function') syncBar();
 }
 
 document.getElementById('seg').addEventListener('click', e => {
@@ -368,6 +382,34 @@ document.getElementById('seg').addEventListener('click', e => {
   document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('active', x===b));
   render();
 });
+
+// Floating totals bar: mirror the <tfoot> row into a fixed bar, with each cell
+// width copied from the table header, shown only while the real row is off screen.
+const totalsBar = document.getElementById('totalsBar');
+const tbInner = totalsBar.querySelector('.tb-inner');
+const wrap = document.querySelector('.tbl-wrap');
+function syncBar(){
+  if(window.innerWidth <= 720){ totalsBar.style.display='none'; return; }
+  const footRect = foot.getBoundingClientRect();
+  const tableRect = table.getBoundingClientRect();
+  const show = footRect.top > window.innerHeight - 2 && tableRect.top < window.innerHeight;
+  if(!show){ totalsBar.style.display='none'; return; }
+  const ths = [...table.querySelectorAll('thead tr.col-head th')];
+  const footTds = [...foot.querySelectorAll('td')];
+  const w = ths.map(th => th.getBoundingClientRect().width);
+  // footTds[0] spans header cols 0+1; footTds[i>=1] maps to header col i+1
+  let html = `<div class="tb-cell tb-label" style="width:${w[0]+w[1]}px">${footTds[0].innerHTML}</div>`;
+  for(let i=1;i<footTds.length;i++){
+    html += `<div class="tb-cell ${footTds[i].className}" style="width:${w[i+1]}px">${footTds[i].innerHTML}</div>`;
+  }
+  tbInner.innerHTML = html;
+  tbInner.style.width = w.reduce((a,b)=>a+b,0)+'px';
+  tbInner.style.marginLeft = tableRect.left+'px';
+  totalsBar.style.display='block';
+}
+window.addEventListener('scroll', syncBar, {passive:true});
+window.addEventListener('resize', syncBar);
+wrap.addEventListener('scroll', syncBar, {passive:true});
 
 const grace = document.getElementById('grace');
 const graceRead = document.getElementById('graceRead');
@@ -382,7 +424,7 @@ function onGrace(){
   } else {
     graceRead.classList.remove('off');
     graceRead.textContent = `+${grace.value}% of cap` + (fill>=1 ? ' · max' : '');
-    graceNote.innerHTML = `Graces add flat success chance up to the base rate — at <b>max</b> they double your effective rate. Grace/Blessing/Protection used per tap appear as extra columns; base-material totals fall as the effective rate rises. The Artisan hard-pity tap count is unchanged.`;
+    graceNote.innerHTML = `Breaths add flat success chance up to the base rate — at <b>max</b> they double your effective rate. Lava's &amp; Glacier's Breath used per tap appear as extra columns; base-material totals fall as the effective rate rises. The Artisan hard-pity tap count is unchanged.`;
   }
   render();
 }
