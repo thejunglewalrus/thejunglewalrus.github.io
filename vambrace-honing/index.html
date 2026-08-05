@@ -43,7 +43,8 @@ body { background:radial-gradient(1100px 460px at 50% -8%, rgba(155,133,214,.05)
 
 /* Grace selector */
 .grace-ctrl { display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;
-  background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:9px 15px; }
+  background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:9px 15px;
+  width:603px; max-width:100%; box-sizing:border-box; }
 .grace-head { display:flex; align-items:center; gap:5px; color:var(--text2); font-size:.78rem;
   text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
 .grace-head img { width:20px; height:20px; border-radius:4px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
@@ -59,6 +60,20 @@ input[type=range]#grace { -webkit-appearance:none; appearance:none; width:190px;
 .grace-read.off { color:var(--text3); font-weight:500; }
 .grace-note { color:var(--text3); font-size:.75rem; max-width:680px; text-align:center; text-wrap:balance; padding:0 12px; min-height:1em; }
 .grace-note b { color:var(--accent); }
+
+/* Stage range selector — click-drag box picker, labeled +1..+25 above each box */
+.range-ctrl { display:flex; flex-direction:column; align-items:center; gap:8px;
+  background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:9px 15px; margin-top:16px;
+  width:603px; max-width:100%; box-sizing:border-box; }
+.range-head { color:var(--text2); font-size:.78rem; text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+.range-picker { overflow-x:auto; max-width:100%; padding-bottom:2px; }
+.range-labels, .range-boxes { display:flex; gap:3px; width:max-content; }
+.range-labels span { width:20px; text-align:center; font-size:.6rem; color:var(--text3); font-variant-numeric:tabular-nums; }
+.range-box { width:20px; height:20px; border-radius:4px; background:var(--surface2); border:1px solid var(--border);
+  cursor:pointer; user-select:none; touch-action:none; transition:background .08s,border-color .08s; }
+.range-box:hover { border-color:var(--accent); }
+.range-box.selected { background:var(--accent); border-color:var(--accent); }
+.range-readout { font-size:.8rem; font-weight:600; color:var(--gold); font-variant-numeric:tabular-nums; }
 
 /* Grace columns are hidden until graces are applied. */
 table:not(.show-graces) .gcol { display:none; }
@@ -221,6 +236,15 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
     </select>
     <p class="note" id="note"></p>
 
+    <div class="range-ctrl">
+      <div class="range-head">Stage range</div>
+      <div class="range-picker" id="rangePicker">
+        <div class="range-labels" id="rangeLabels"></div>
+        <div class="range-boxes" id="rangeBoxes"></div>
+      </div>
+      <div class="range-readout" id="rangeReadout"></div>
+    </div>
+
     <div class="grace-ctrl">
       <div class="grace-head">
         <img src="icons/lavas_breath.png" alt="Lava's Breath">
@@ -351,6 +375,22 @@ function rateColor(r){ const v=parseFloat(r); return v>=15?'var(--green)':v>=10?
 const fmt = n => n.toLocaleString('en-US');
 
 let model = 'attempt', fill = 0, luck = 'avg';
+let selectedStages = new Set(Array.from({length:25}, (_,i) => i+1));
+function formatStages(set){
+  const arr = [...set].sort((a,b)=>a-b);
+  if(!arr.length) return 'No stages selected';
+  const parts = [];
+  let start = arr[0], prev = arr[0];
+  for(let i=1;i<=arr.length;i++){
+    const cur = arr[i];
+    if(cur !== prev+1){
+      parts.push(start===prev ? `+${start}` : `+${start} → +${prev}`);
+      start = cur;
+    }
+    prev = cur;
+  }
+  return parts.join(', ');
+}
 const table = document.querySelector('table');
 const body = document.getElementById('body');
 const foot = document.getElementById('foot');
@@ -370,8 +410,9 @@ function render(){
   const tot = { shard:0, silver:0 };
   const totM = Object.fromEntries(MATS.map(m=>[m,0]));
   const totG = [0,0,0];
+  const rows = DATA.filter(row => selectedStages.has(row.stage));
 
-  body.innerHTML = DATA.map(row => {
+  body.innerHTML = rows.map(row => {
     tot.shard += row.unlock.shard; tot.silver += row.unlock.silver;
     const taps = expTaps(row.rate, fill, model);
     const perG = graceCounts(row.rate, fill);
@@ -395,7 +436,7 @@ function render(){
   const footCells  = MATS.map((m,i)=>cell(m, totM[m], {divide:i===0})).join('');
   const footGcells = showG ? GRACES.map((gm,i)=>cell(gm, totG[i], {gcol:true, gdiv:i===0, vclass:VCLASS[gm]})).join('') : '';
   foot.innerHTML = `<tr>
-    <td class="c-total" colspan="2" data-label="">Totals · +0 → +25</td>
+    <td class="c-total" colspan="2" data-label="">Totals · ${formatStages(selectedStages)}</td>
     ${cell('shard', tot.shard, {divide:true, label:'Unlock · Destiny Shard'})}
     ${cell('silver', tot.silver, {label:'Unlock · Silver'})}
     ${footCells}${footGcells}
@@ -461,6 +502,37 @@ function onGrace(){
 }
 grace.addEventListener('input', onGrace);
 onGrace();
+
+const rangeLabels  = document.getElementById('rangeLabels');
+const rangeBoxesEl = document.getElementById('rangeBoxes');
+const rangeReadout = document.getElementById('rangeReadout');
+for(let s=1; s<=25; s++){
+  rangeLabels.insertAdjacentHTML('beforeend', `<span>+${s}</span>`);
+  rangeBoxesEl.insertAdjacentHTML('beforeend', `<div class="range-box" data-stage="${s}" role="button" aria-label="Stage +${s}"></div>`);
+}
+const rangeBoxes = [...rangeBoxesEl.querySelectorAll('.range-box')];
+rangeBoxes.forEach(el => el.classList.toggle('selected', selectedStages.has(+el.dataset.stage)));
+rangeReadout.textContent = formatStages(selectedStages);
+
+let dragging = false, paintMode = true;
+rangeBoxes.forEach(el => {
+  el.addEventListener('pointerdown', e => {
+    dragging = true;
+    paintMode = !el.classList.contains('selected');
+    el.classList.toggle('selected', paintMode);
+    e.preventDefault();
+  });
+  el.addEventListener('pointerenter', () => {
+    if(dragging) el.classList.toggle('selected', paintMode);
+  });
+});
+window.addEventListener('pointerup', () => {
+  if(!dragging) return;
+  dragging = false;
+  selectedStages = new Set(rangeBoxes.filter(el => el.classList.contains('selected')).map(el => +el.dataset.stage));
+  rangeReadout.textContent = formatStages(selectedStages);
+  render();
+});
 </script>
 
 <!-- Junglewalrus "back to hub" badge — portable snippet from
