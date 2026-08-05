@@ -285,25 +285,37 @@ const LABEL = { shard:'Destiny Shard', destr:'Destr. Stone Crystal', guard:'Guar
                 leap:'Leapstone', fusion:'Adv. Abidos Fusion', gold:'Gold', silver:'Silver',
                 lava:"Lava's Breath", glacier:"Glacier's Breath" };
 
-// Honing math constants — verified against the game's ItemEnhanceCommon table.
-const ART_DENOM = 21500;  // Artisan's Energy guarantee threshold (bps); hard pity = ceil(21500/base_bps)
+// Honing math constants.
+// Artisan's Energy: each FAIL grants 46.51% (=1/2.15) of that tap's TOTAL success rate —
+// base + breaths + failure bonus. Verified in-game: 15.000% shows +6.97%, 30.000% shows +13.95%.
+// The tap after the bar reaches 100% is a guaranteed success, so breaths also speed up hard pity.
+const ART_RATIO = 1/2.15;
 const FAILF     = 0.1;    // soft failure bonus per fail = base×0.1, stacks up to +base (10 fails)
 // Full-juice bundle per base rate: max Lava's + Glacier's Breath per tap (both fill the additive cap = base rate).
 const BUNDLE = { '15.0%':[20,20], '10.0%':[20,20], '5.0%':[20,20], '3.0%':[25,25], '1.5%':[25,25] };
 
 const baseP  = r => parseFloat(r)/100;
-const pity   = r => Math.ceil(ART_DENOM/Math.round(baseP(r)*10000));
+// Success chance on tap k (1-indexed): base + graces (+ failure bonus in the soft model).
+const tapP   = (p0,g,k,soft) => Math.min(1, p0 + g + (soft ? Math.min(p0, p0*FAILF*(k-1)) : 0));
+// Guaranteed-success tap: first tap reached with the artisan bar already at 100%.
+function pity(rate, fill, soft){
+  const p0 = baseP(rate), g = p0*fill;
+  let art = 0;
+  for(let k=1;;k++){
+    if(art >= 1 - 1e-9) return k;
+    art += tapP(p0,g,k,soft) * ART_RATIO;
+  }
+}
 // Expected honing attempts to one success, given grace fill (0–1 of the cap) and model.
 function expTaps(rate, fill, model){
   const p0 = baseP(rate), g = p0*fill;              // grace adds flat chance, cap = base
   if(model==='attempt')  return 1;
   if(model==='uncapped') return 1/Math.min(1, p0+g);
-  const M = pity(rate);
-  if(model==='hard'){ const p=Math.min(1,p0+g); return (1-Math.pow(1-p,M))/p; }
-  let E=0, reach=1;                                  // soft: rising rate + graces, hard pity at M
-  for(let k=1;k<=M;k++){ E+=reach; if(k===M) break;
-    const pk = Math.min(1, p0 + g + Math.min(p0, p0*FAILF*(k-1)));
-    reach *= (1-pk);
+  const soft = model==='soft';
+  const M = pity(rate, fill, soft);
+  let E=0, reach=1;
+  for(let k=1;k<=M;k++){ E+=reach; if(k===M) break;   // tap M is the guaranteed success
+    reach *= (1 - tapP(p0,g,k,soft));
   }
   return E;
 }
@@ -357,7 +369,7 @@ function render(){
     const eff = showG ? ` <span class="eff-rate">→ ${Math.min(100, baseP(row.rate)*(1+fill)*100).toFixed(1)}%</span>` : '';
     return `<tr>
       <td class="c-stage" data-label="Stage">+${row.stage}</td>
-      <td class="c-rate" data-label="Success"><span class="rate-val" style="color:${rateColor(row.rate)}">${row.rate}</span>${eff}${showTaps?`<span class="taps">≤ ${pity(row.rate)} taps</span>`:''}</td>
+      <td class="c-rate" data-label="Success"><span class="rate-val" style="color:${rateColor(row.rate)}">${row.rate}</span>${eff}${showTaps?`<span class="taps">≤ ${pity(row.rate, fill, model==='soft')} taps</span>`:''}</td>
       ${cell('shard', row.unlock.shard, {divide:true, label:'Unlock · Destiny Shard'})}
       ${cell('silver', row.unlock.silver, {label:'Unlock · Silver'})}
       ${cells}${gcells}
@@ -424,7 +436,7 @@ function onGrace(){
   } else {
     graceRead.classList.remove('off');
     graceRead.textContent = `+${grace.value}% of cap` + (fill>=1 ? ' · max' : '');
-    graceNote.innerHTML = `Breaths add flat success chance up to the base rate — at <b>max</b> they double your effective rate. Lava's &amp; Glacier's Breath used per tap appear as extra columns; base-material totals fall as the effective rate rises. The Artisan hard-pity tap count is unchanged.`;
+    graceNote.innerHTML = `Breaths add flat success chance up to the base rate — at <b>max</b> they double your effective rate. Lava's &amp; Glacier's Breath used per tap appear as extra columns; base-material totals fall as the effective rate rises. Artisan's Energy accrues at 46.51% of the <b>total</b> rate per fail, so breaths also cut the hard-pity tap count (updated live in the Success column).`;
   }
   render();
 }
