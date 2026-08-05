@@ -291,9 +291,8 @@ const LABEL = { shard:'Destiny Shard', destr:'Destr. Stone Crystal', guard:'Guar
 // The tap after the bar reaches 100% is a guaranteed success, so breaths also speed up hard pity.
 const ART_RATIO = 1/2.15;
 const FAILF     = 0.1;    // soft failure bonus per fail = base×0.1, stacks up to +base (10 fails)
-// Max 20 Lava's + 20 Glacier's Breath per tap at every stage; each breath adds base/40
-// (0.375% at the 15% stage — verified in-game), so full juice doubles the rate everywhere.
-const BUNDLE = { '15.0%':[20,20], '10.0%':[20,20], '5.0%':[20,20], '3.0%':[20,20], '1.5%':[20,20] };
+// Full-juice bundle per base rate: max Lava's + Glacier's Breath per tap (both fill the additive cap = base rate).
+const BUNDLE = { '15.0%':[20,20], '10.0%':[20,20], '5.0%':[20,20], '3.0%':[25,25], '1.5%':[25,25] };
 
 const baseP  = r => parseFloat(r)/100;
 // Success chance on tap k (1-indexed): base + graces (+ failure bonus in the soft model).
