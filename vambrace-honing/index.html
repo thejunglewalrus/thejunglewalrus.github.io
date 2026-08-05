@@ -32,6 +32,10 @@ body { background:radial-gradient(1100px 460px at 50% -8%, rgba(155,133,214,.05)
 .seg button:hover { background:var(--surface); color:var(--text); }
 .seg button.active { background:var(--accent); color:#1a1a1f; font-weight:600; }
 .seg button + button { border-left:1px solid var(--border); }
+.luck-sel { background:var(--surface2); color:var(--text); border:1px solid var(--border); border-radius:7px;
+  padding:8px 12px; font:inherit; font-size:.82rem; cursor:pointer; transition:background .12s,border-color .12s; }
+.luck-sel:hover { background:var(--surface); border-color:var(--accent); }
+.luck-sel:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .note { color:var(--text3); font-size:.78rem; max-width:680px; text-align:center; text-wrap:balance; padding:0 12px; }
 .note b { color:var(--text2); }
 .dl-csv { color:var(--text3); font-size:.75rem; text-decoration:none; border-bottom:1px dashed var(--border); padding-bottom:1px; transition:color .12s,border-color .12s; }
@@ -210,6 +214,11 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
       <button data-model="attempt" class="active">Per Attempt</button>
       <button data-model="soft">Estimated pity system</button>
     </div>
+    <select class="luck-sel" id="luck" aria-label="Luck scenario" hidden>
+      <option value="best">Perfect luck — 1 tap</option>
+      <option value="avg" selected>Average cost</option>
+      <option value="worst">Worst case — full pity</option>
+    </select>
     <p class="note" id="note"></p>
 
     <div class="grace-ctrl">
@@ -312,7 +321,9 @@ function expTaps(rate, fill, model){
   if(model==='attempt')  return 1;
   if(model==='uncapped') return 1/Math.min(1, p0+g);
   const soft = model==='soft';
+  if(soft && luck==='best') return 1;                  // perfect luck: first tap lands
   const M = pity(rate, fill, soft);
+  if(soft && luck==='worst') return M;                 // every tap fails until the artisan guarantee
   let E=0, reach=1;
   for(let k=1;k<=M;k++){ E+=reach; if(k===M) break;   // tap M is the guaranteed success
     reach *= (1 - tapP(p0,g,k,soft));
@@ -333,11 +344,13 @@ const NOTES = {
   uncapped: 'Average total to reach <b>one success</b> — the naive 1&#8239;/&#8239;p estimate, ignoring all pity. Upper bound.',
   hard:     'Average total capped by <b>Artisan’s Energy</b> hard pity (guaranteed success by the tap count shown under each rate).',
   soft:     'Average total with the <b>failure-bonus soft pity</b> (success rate climbs as you fail) plus Artisan’s Energy hard pity — the <b>most realistic</b> estimate.',
+  soft_best:  'Best case: <b>every stage succeeds on the first tap</b> — identical to the raw per-attempt cost. The floor for a full +0&nbsp;&rarr;&nbsp;+25 run.',
+  soft_worst: 'Worst case: <b>every tap fails</b> until Artisan’s Energy guarantees the success (the tap count under each rate). The ceiling — you can never pay more than this.',
 };
 function rateColor(r){ const v=parseFloat(r); return v>=15?'var(--green)':v>=10?'var(--amber)':v>=5?'var(--gold)':v>=3?'#d98b6a':'var(--red)'; }
 const fmt = n => n.toLocaleString('en-US');
 
-let model = 'attempt', fill = 0;
+let model = 'attempt', fill = 0, luck = 'avg';
 const table = document.querySelector('table');
 const body = document.getElementById('body');
 const foot = document.getElementById('foot');
@@ -347,9 +360,12 @@ const honeGrp = document.getElementById('honeGrp');
 function render(){
   const showG = fill > 0;
   table.classList.toggle('show-graces', showG);
-  honeGrp.textContent = model==='attempt' ? 'Per Honing Attempt' : 'Expected Total per Success';
+  honeGrp.textContent = model==='attempt' ? 'Per Honing Attempt'
+    : luck==='best' ? 'Total per Success (Perfect Luck)'
+    : luck==='worst' ? 'Worst-Case Total per Success'
+    : 'Expected Total per Success';
   honeGrp.colSpan = showG ? 9 : 7;
-  note.innerHTML = NOTES[model];
+  note.innerHTML = model==='soft' && luck!=='avg' ? NOTES['soft_'+luck] : NOTES[model];
 
   const tot = { shard:0, silver:0 };
   const totM = Object.fromEntries(MATS.map(m=>[m,0]));
@@ -388,12 +404,15 @@ function render(){
   if (typeof syncBar === 'function') syncBar();
 }
 
+const luckSel = document.getElementById('luck');
 document.getElementById('seg').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
   model = b.dataset.model;
   document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('active', x===b));
+  luckSel.hidden = model !== 'soft';
   render();
 });
+luckSel.addEventListener('change', () => { luck = luckSel.value; render(); });
 
 // Floating totals bar: mirror the <tfoot> row into a fixed bar, with each cell
 // width copied from the table header, shown only while the real row is off screen.
