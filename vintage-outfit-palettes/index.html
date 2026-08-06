@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vintage outfit palettes</title>
+<style>
+  :root{
+    --paper:#F5EFE2; --ink:#2E2620; --muted:#7A6E5F; --rule:#D8CDB8;
+    --oxblood:#6A2E35; --mustard:#C9A227;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.6;padding:48px 24px}
+  .sheet{max-width:880px;margin:0 auto}
+  header{border-bottom:3px double var(--ink);padding-bottom:20px;margin-bottom:8px}
+  .eyebrow{font-family:'Courier New',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--oxblood)}
+  h1{font-size:38px;font-weight:400;font-style:italic;margin-top:6px}
+  .sub{color:var(--muted);font-size:15px;margin-top:4px}
+  .legend{font-family:'Courier New',monospace;font-size:12px;color:var(--muted);padding:14px 0;border-bottom:1px solid var(--rule)}
+  h2{font-size:15px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;margin:40px 0 6px;color:var(--oxblood)}
+  h2 small{color:var(--muted);text-transform:none;letter-spacing:0;font-style:italic;margin-left:8px}
+  .palette{display:grid;grid-template-columns:170px 1fr;gap:18px;align-items:start;padding:20px 0;border-bottom:1px solid var(--rule)}
+  .pname{font-size:19px;font-style:italic}
+  .pnote{font-family:'Courier New',monospace;font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+  .chips{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  .chip{cursor:pointer;text-align:center}
+  .chip .sw{height:64px;border:1px solid rgba(0,0,0,.15);border-bottom-width:6px}
+  .chip .role{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .chip .hex{font-family:'Courier New',monospace;font-size:12px;margin-top:1px}
+  .chip:hover .hex{color:var(--oxblood)}
+  footer{margin-top:48px;padding-top:16px;border-top:3px double var(--ink);font-family:'Courier New',monospace;font-size:11px;color:var(--muted)}
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-family:'Courier New',monospace;font-size:12px;padding:8px 16px;opacity:0;transition:opacity .25s;pointer-events:none}
+  @media (max-width:720px){.palette{grid-template-columns:1fr}.chips{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <div class="eyebrow">Paint app reference &middot; complete swatch collection</div>
+    <h1>Outfit palettes</h1>
+    <div class="sub">Shoes &middot; jeans &middot; bikini (top + bottom) &middot; backwards ballcap &middot; two pattern accents</div>
+  </header>
+  <div class="legend">Click any swatch to copy its hex code. Keep the jeans as the most faded piece; let the bikini carry the saturation.</div>
+
+  <h2>Series A <small>saturated bikini focal point</small></h2>
+  <div id="seriesA"></div>
+
+  <h2>Series B <small>fully muted originals</small></h2>
+  <div id="seriesB"></div>
+
+  <h2>Series C <small>styles with ballcap, batch two</small></h2>
+  <div id="seriesC"></div>
+
+  <h2>Series D <small>original styles, no ballcap</small></h2>
+  <div id="seriesD"></div>
+
+  <footer>Generated Aug 2026 &middot; hexes are sRGB &middot; pattern tip: thin corduroy stripes in accent 1, trim in accent 2</footer>
+</div>
+<div id="toast">copied</div>
+
+<script>
+const ROLES = ["Shoes","Jeans","Bikini","Ballcap","Accent 1","Accent 2"];
+const seriesA = [
+  ["Cherry corduroy","Cherry red against browns and cream — the classic move","#6B4A2F","#7E8CA3","#D2042D","#A14A28","#EFE6D2","#5F6B3C"],
+  ["Coral quad","'70s warmth, coral pops off the mid-wash denim","#8A6F4D","#56688A","#FF5A5F","#4E3524","#F3E5C5","#E0B84C"],
+  ["Fuchsia poetry","Highest contrast — fuchsia vs. dark navy jeans","#6A2E35","#2F3A4F","#E0218A","#97918A","#C9A227","#EFE9E0"],
+  ["Emerald tweed","Jewel green kept honest by tweedy browns","#8A6F4D","#6C7686","#0E9F6E","#5C5348","#B98E4A","#D9C7A7"],
+  ["Tangerine records","Pure '70s heat over dark chocolate shoes","#2F2A26","#5D6E8C","#FF7518","#DDC08A","#3E5C55","#EDE1C8"],
+  ["Turquoise library","Sleeper pick — aqua vs. olive and chestnut","#7C4A2D","#3C4A63","#17BEBB","#4F5A33","#C9A227","#E9DDC2"],
+  ["Ruby folk","Deep raspberry with suede tan and khaki","#A9805B","#8296AC","#C2185B","#C2B49A","#B0413E","#F2EADB"],
+  ["Marigold seminar","Amber-gold glowing out of charcoal and forest","#3B3B3B","#4A5568","#FFB000","#29392F","#A98F5D","#DCD6C8"]
+];
+const seriesB = [
+  ["Corduroy seminar","Mustard, rust, and olive — corduroy stripe patterns fit","#6B4A2F","#7E8CA3","#C99700","#A14A28","#5F6B3C","#EFE6D2"],
+  ["'70s campus quad","Harvest gold + avocado; try wide horizontal stripes","#C24E2E","#56688A","#E0B84C","#4E3524","#8A9A5B","#F3E5C5"],
+  ["Poetry major","Dusty rose softened by heather grey cap","#6A2E35","#2F3A4F","#C98C9A","#97918A","#C9A227","#EFE9E0"],
+  ["Thrifted tweed","Forest green core; houndstooth-friendly","#8A6F4D","#6C7686","#33604A","#5C5348","#B98E4A","#D9C7A7"],
+  ["Record store clerk","Faded red with teal accent, tan cap","#2F2A26","#5D6E8C","#C25B4E","#DDC08A","#3E5C55","#EDE1C8"],
+  ["Autumn library","Terracotta + ochre; herringbone on the cap","#7C4A2D","#3C4A63","#B4652F","#4F5A33","#C9A227","#E9DDC2"],
+  ["Folk singer","Faded plum; tiny cream florals work here","#A9805B","#8296AC","#7D5A78","#C2B49A","#B0413E","#F2EADB"],
+  ["Philosophy TA","Deep burgundy, brass pinstripe accent","#3B3B3B","#4A5568","#7E1E2D","#29392F","#A98F5D","#DCD6C8"]
+];
+
+const seriesC = [
+  ["Retro skater","Navy cap grounds the red shoes","#D62828","#4E5D78","#F4D35E","#1D3557","#F77F00","#FFFFFF"],
+  ["Cotton candy","Soft pastels, sky-blue cap","#FFFFFF","#C4B7EB","#FF9EC4","#7FD8F7","#B57EDC","#FFF4FA"],
+  ["Monochrome minimal","All greyscale, cap sits mid-tone","#E5E5E5","#2B2B2B","#FFFFFF","#6B6B6B","#9E9E9E","#111111"],
+  ["Vaporwave","Cyan cap vs. magenta bikini; orange brim detail","#1B1035","#4B3F72","#FF2E97","#00E5FF","#FFB347","#F8F8FF"],
+  ["Sporty varsity","Red cap with gold letter or pinstripe","#FDFDFD","#27436B","#1E7A46","#C8102E","#F2C94C","#EDEDED"],
+  ["Coastal breeze","Rust cap warms the navy and sand","#E9DDC7","#7A94B0","#123A63","#C96F4A","#FFFFFF","#2E5E4E"],
+  ["Grape soda clash","Lime bikini vs. deep purples","#5A2A82","#8FA3C8","#C6E86D","#3A1D5D","#FF8FD8","#F4F1FA"],
+  ["Cherry cola","Cream cap keeps the dark reds light","#7A1F2B","#23364F","#E63946","#F1E3C8","#D9A05B","#2E1A1E"]
+];
+const ROLES5 = ["Shoes","Jeans","Bikini","Accent 1","Accent 2"];
+const seriesD = [
+  ["Classic Americana","Stars and stripes territory; navy pattern on red","#F5F1E8","#2C4770","#C0392B","#1B2A4A","#EDE6D6"],
+  ["Pastel beach day","Polka dots or hearts in the coral accent","#F7C8D0","#A8C3DC","#9FE2BF","#FF8B7B","#FFFDF7"],
+  ["Streetwear neon","Purple stripes or graffiti marks on the jeans","#1A1A1A","#6E7B8B","#B4FF3A","#7B2FBE","#F2F2F2"],
+  ["Sunset warm","Golden hour heat over slate denim","#E86A33","#3F4E6B","#FFD23F","#D7263D","#FCE8C3"],
+  ["Earthy desert","Aztec/geometric patterns, alternate brown + cream","#B08D57","#4A5A47","#C1633C","#5C4033","#EFE3CE"],
+  ["Y2K throwback","Hot pink pop, lilac pattern accent","#C9CDD4","#9EC5E8","#FF4FA3","#C9A6F5","#FFFFFF"],
+  ["Moody academia","Thin gold pinstripe on the jeans","#5E1F27","#33383F","#23573C","#C9A227","#F1E9DA"],
+  ["Tropical punch","Aqua shoes, white-wash jeans, coral heat","#29B6A8","#E8E4DC","#FF6F61","#FFC94A","#135E54"]
+];
+
+function render(target, data, roles){
+  roles = roles || ROLES;
+  const el = document.getElementById(target);
+  el.innerHTML = data.map(p => {
+    const [name, note, ...hexes] = p;
+    const chips = hexes.map((h,i) =>
+      '<div class="chip" data-hex="'+h+'" title="Copy '+h+'">'+
+      '<div class="sw" style="background:'+h+'"></div>'+
+      '<div class="role">'+roles[i]+'</div>'+
+      '<div class="hex">'+h+'</div></div>'
+    ).join('');
+    return '<div class="palette"><div><div class="pname">'+name+'</div>'+
+      '<div class="pnote">'+note+'</div></div>'+
+      '<div class="chips">'+chips+'</div></div>';
+  }).join('');
+}
+render('seriesA', seriesA);
+render('seriesB', seriesB);
+render('seriesC', seriesC);
+render('seriesD', seriesD, ROLES5);
+
+const toast = document.getElementById('toast');
+let toastTimer;
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  const hex = chip.dataset.hex;
+  const done = () => {
+    toast.textContent = 'copied ' + hex;
+    toast.style.opacity = 1;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.style.opacity = 0, 1200);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(hex).then(done).catch(done);
+  } else { done(); }
+});
+</script>
+</body>
+</html>
