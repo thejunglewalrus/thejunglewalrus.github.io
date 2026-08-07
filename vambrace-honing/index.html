@@ -325,7 +325,9 @@ const LABEL = { shard:'Destiny Shard', destr:'Destr. Stone Crystal', guard:'Guar
 const ART_RATIO = 1/2.15;
 const FAILF     = 0.1;    // soft failure bonus per fail = base×0.1, stacks up to +base (10 fails)
 // Full-juice bundle per base rate: max Lava's + Glacier's Breath per tap (both fill the additive cap = base rate).
-const BUNDLE = { '15.0%':[20,20], '10.0%':[20,20], '5.0%':[20,20], '3.0%':[25,25], '1.5%':[25,25] };
+// Per-breath bonus × max count = base rate in every band (lopec.kr extracted table, verified in-game):
+// 15%: 20×0.375%  ·  10%: 25×0.2%  ·  5%: 25×0.1%  ·  3%: 30×0.05%  ·  1.5%: 30×0.025%
+const BUNDLE = { '15.0%':[20,20], '10.0%':[25,25], '5.0%':[25,25], '3.0%':[30,30], '1.5%':[30,30] };
 
 const baseP  = r => parseFloat(r)/100;
 // Success chance on tap k (1-indexed): base + graces (+ failure bonus in the soft model).
@@ -340,19 +342,20 @@ function pity(rate, fill, soft){
   }
 }
 // Expected honing attempts to one success, given grace fill (0–1 of the cap) and model.
+// graceTaps excludes the guaranteed pity tap — success is certain there, so no breaths are slotted.
 function expTaps(rate, fill, model){
   const p0 = baseP(rate), g = p0*fill;              // grace adds flat chance, cap = base
-  if(model==='attempt')  return 1;
-  if(model==='uncapped') return 1/Math.min(1, p0+g);
+  if(model==='attempt')  return {taps:1, graceTaps:1};
+  if(model==='uncapped'){ const t = 1/Math.min(1, p0+g); return {taps:t, graceTaps:t}; }
   const soft = model==='soft';
-  if(soft && luck==='best') return 1;                  // perfect luck: first tap lands
+  if(soft && luck==='best') return {taps:1, graceTaps:1};  // perfect luck: first tap lands
   const M = pity(rate, fill, soft);
-  if(soft && luck==='worst') return M;                 // every tap fails until the artisan guarantee
+  if(soft && luck==='worst') return {taps:M, graceTaps:M-1}; // every tap fails until the artisan guarantee
   let E=0, reach=1;
   for(let k=1;k<=M;k++){ E+=reach; if(k===M) break;   // tap M is the guaranteed success
     reach *= (1 - tapP(p0,g,k,soft));
   }
-  return E;
+  return {taps:E, graceTaps:E-reach};                 // reach = P(hitting the guaranteed tap)
 }
 const graceCounts = (rate, fill) => (BUNDLE[rate]||[0,0,0]).map(x=>Math.round(x*fill));
 
@@ -414,11 +417,11 @@ function render(){
 
   body.innerHTML = rows.map(row => {
     tot.shard += row.unlock.shard; tot.silver += row.unlock.silver;
-    const taps = expTaps(row.rate, fill, model);
+    const {taps, graceTaps} = expTaps(row.rate, fill, model);
     const perG = graceCounts(row.rate, fill);
     const mv = m => Math.round(row.attempt[m]*taps);
     MATS.forEach(m => totM[m] += mv(m));
-    const gVals = perG.map(c => Math.round(c*taps));
+    const gVals = perG.map(c => Math.round(c*graceTaps));
     gVals.forEach((v,i)=> totG[i]+=v);
     const cells  = MATS.map((m,i)=>cell(m, mv(m), {divide:i===0})).join('');
     const gcells = showG ? GRACES.map((gm,i)=>cell(gm, gVals[i], {gcol:true, gdiv:i===0, vclass:VCLASS[gm]})).join('') : '';
@@ -496,7 +499,7 @@ function onGrace(){
   } else {
     graceRead.classList.remove('off');
     graceRead.textContent = `+${grace.value}% of cap` + (fill>=1 ? ' · max' : '');
-    graceNote.innerHTML = `Breaths add flat success chance up to the base rate — at <b>max</b> they double your effective rate. Lava's &amp; Glacier's Breath used per tap appear as extra columns; base-material totals fall as the effective rate rises. Artisan's Energy accrues at 46.51% of the <b>total</b> rate per fail, so breaths also cut the hard-pity tap count (updated live in the Success column).`;
+    graceNote.innerHTML = `Breaths add flat success chance up to the base rate — at <b>max</b> they double your effective rate. Per breath: <b>0.375%</b> at +1–5 (20 each), <b>0.2%</b> at +6–10 (25 each), <b>0.1%</b> at +11–15 (25 each), <b>0.05%</b> at +16–20 (30 each), <b>0.025%</b> at +21–25 (30 each). Lava's &amp; Glacier's Breath used per tap appear as extra columns; base-material totals fall as the effective rate rises. Artisan's Energy accrues at 46.51% of the <b>total</b> rate per fail, so breaths also cut the hard-pity tap count (updated live in the Success column). The guaranteed pity tap consumes no breaths.`;
   }
   render();
 }
