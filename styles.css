@@ -289,6 +289,11 @@ section > h2::after { background: linear-gradient(90deg, var(--gold-dim), transp
   border-color: rgba(214,110,122,.50);
   background: rgba(214,110,122,.09);
 }
+.pill-cn{
+  color: #f2c46d;
+  border-color: rgba(232,170,60,.50);
+  background: rgba(232,170,60,.09);
+}
 
 /* ============================================================
    KR REGION ACCENT — copper inner line instead of gold
