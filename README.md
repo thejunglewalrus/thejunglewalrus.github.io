@@ -42,7 +42,7 @@ Drop a new `<article>` into the relevant `<section>` in `index.html`. The skelet
 - `data-kind="calculator" | "planner" | "sim" | "reference" | "patch-notes" | "meta-breakdown"` &mdash; informational only; pair with a matching `<span class="pill pill-kind">` label
 - `data-mine="true"` &mdash; informational only; pair with `<span class="pill pill-mine">Mine</span>`
 
-Pill classes available: `pill-mine`, `pill-region` + (`pill-naeu` | `pill-kr` | `pill-global`), `pill-kind`.
+Pill classes available: `pill-mine`, `pill-region` + (`pill-naeu` | `pill-kr` | `pill-ru` | `pill-cn` | `pill-global`), `pill-kind`.
 
 ## Adding a translation tile
 
