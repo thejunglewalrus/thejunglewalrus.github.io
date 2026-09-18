@@ -1,12 +1,12 @@
 # Toolbox redesign verification
 
-## Delivered scope
+## Initial redesign scope
 
 - Hub: shared identity, two featured calculators, search/category/region filters, empty/reset states, compact translation disclosures. All 21 original directory entries and destination links retained.
 - Hell: full ranked chart always visible (user explicitly removed the offered-chest selector), compact top setup, Wealth +1 actions, searchable grouped market settings, direct Edit prices shortcut, matching theme.
 - Cash shop: matching shell across every route, search/filter, optional three-pack comparison, expandable contents, labeled price dialogs with Save/Cancel/Reset, actual price timestamps, compact pack assumptions.
 
-## Verification results
+## Initial redesign verification results
 
 - Hub JavaScript syntax and whitespace checks passed. Browser: search + region intersection, empty/reset, categories, desktop and phone layout.
 - Hell build passed. Exactly unchanged: 2,343 chest/base/Wealth fixtures, seven rarity distributions, 20 expected-pick fixtures. Built-in floor-distribution and gamble assertions passed.
@@ -23,3 +23,12 @@ Hell: http://127.0.0.1:8741/
 Cash shop: http://127.0.0.1:5173/
 
 Preview prices use existing local snapshots; Hell clearly labels its bundled defaults because live prices.json is supplied by the deployment updater. Existing live prices must be preserved when publishing. No changes to game datasets, calculation models, saved-state keys, or daily price refresh jobs. No publication performed.
+
+## Follow-up changes included in the production release
+
+- Removed the cash shop comparison tray and checkboxes; the ranked pack cards remain the comparison view.
+- Hell rewards: added a persistent Include pheon cost control above the full chart. It affects ability stones and automatically priced engraving kits, while explicit kit prices still win. All 16 targeted pricing checks passed; the existing reward/probability fixtures remained unchanged.
+- Cash shop: added an independent persistent Hell Key pheon setting, excluded by default. Key averages now recompute from regional prices, exchange rates and material overrides. Custom key prices retain priority; directly sold pheons keep their value.
+- Cash key calculations retain available zero-value chest offers in the probability pool and exclude missing reward cells. This intentionally corrects the earlier key averages; the initial unchanged-valuation fixtures above describe the graphical overhaul before this follow-up.
+- All eight cash key variants and their breakdowns passed pricing, probability-pool and exchange-rate checks. Browser checks covered pack totals, detail/math consistency, custom-price precedence, persistence and desktop/mobile layout. Production build passed; the checker has zero errors and the pre-existing missing Node type-definition warning.
+- Rollback tag: `pre-toolbox-redesign-2026-09-18`, pushed before deployment to all three public site repositories and both private calculator source repositories. Calculator deployment artifacts preserve the public repositories' live `prices.json` files.
