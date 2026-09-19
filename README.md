@@ -12,10 +12,19 @@ Static HTML, one CSS file, and a small progressive-enhancement script. No build 
 index.html      all sections and cards inline
 styles.css      slate/gold palette, responsive layout, cards and translation rows
 hub.js          directory search, category/region filters, empty/reset states
+social-status.js Twitch live status for the walrus social badge
 assets/         local game icons used by featured calculator links
 favicon.svg
 og-image.png    1200x630 social preview
 ```
+
+The hero social badge links to Twitch, YouTube, and Discord and reuses `walrus.png`.
+Its Twitch status checks the public [DecAPI viewer-count endpoint](https://decapi.me/twitch/viewercount/thejunglewalrus)
+on load, every minute while visible, and when returning to the tab. DecAPI caches
+Twitch results, so changes can take a few minutes to appear. Only a numeric viewer
+count shows **Live Now**; a confirmed offline response shows **Offline**. Failed or
+unexpected responses fall back to **Watch channel**. The links work without
+JavaScript, API credentials, or a local server, including direct-file previews.
 
 ## Adding a tool card
 

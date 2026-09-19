@@ -35,16 +35,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .tool-nav a { display: flex; align-items: center; min-height: 44px; padding: 8px 15px; color: var(--muted); font-size: 14px; border-radius: 6px; }
 .tool-nav a:hover { background: var(--panel); color: var(--text); }
 .tool-nav a[aria-current] { background: var(--panel); color: var(--gold); }
-.hero { max-width: var(--max-w); margin: auto; padding: 54px var(--gutter) 42px; display: grid; grid-template-columns: 1.65fr 1fr; align-items: center; gap: 80px; }
+.hero { max-width: var(--max-w); margin: auto; padding: 54px var(--gutter) 42px; display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(290px, 1fr); align-items: center; gap: 80px; }
 .hero-kicker { margin: 0 0 18px; font-size: 13px; color: var(--gold); display: flex; align-items: center; gap: 10px; }
 .small-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
 h1 { margin: 0; font: 400 clamp(42px, 5vw, 68px)/1.06 Georgia, 'Times New Roman', serif; letter-spacing: -.035em; }
 .tagline { max-width: 460px; color: var(--muted); font-size: 16px; margin: 22px 0 0; }
-.hero-note { border-left: 1px solid var(--line); padding-left: 32px; max-width: 340px; justify-self: end; }
-.note-icon { display: block; color: var(--gold); font: 28px Georgia, serif; margin-bottom: 15px; }
-.hero-note h2 { font: 400 23px/1.2 Georgia, serif; margin: 0 0 12px; }
-.hero-note p { color: var(--muted); margin: 0 0 15px; font-size: 14px; }
-.hero-note a { display: inline-flex; align-items: center; gap: 15px; min-height: 40px; font-size: 14px; }
+.social-badge { width: 100%; max-width: 350px; justify-self: end; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.social-identity { display: flex; align-items: center; gap: 13px; margin-bottom: 18px; }
+.social-walrus { flex-shrink: 0; object-fit: contain; }
+.social-identity h2 { margin: 0; font: 400 22px/1.15 Georgia, serif; }
+.social-identity p { margin: 7px 0 0; font-size: 13px; color: var(--muted); }
+.social-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.social-link { display: flex; justify-content: center; align-items: center; gap: 9px; min-height: 44px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); font-size: 13px; font-weight: 600; transition: background .15s, border-color .15s; }
+.social-link:hover { color: var(--text); background: var(--raised); border-color: var(--muted); }
+.social-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.social-twitch { grid-column: 1 / -1; justify-content: flex-start; background: #282236; border-color: #594570; }
+.social-twitch svg { color: #c6a0fa; }
+.social-twitch:hover { background: #352b47; border-color: #b18adf; }
+.social-youtube svg { color: #ff8585; }
+.social-discord svg { color: #a5aeff; }
+.twitch-status { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; color: #c4b8d4; font-size: 11px; font-weight: 400; white-space: nowrap; }
+.twitch-status[data-state="live"] { color: #ffacb2; font-weight: 700; }
+.twitch-status[data-state="live"]::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #ff7581; box-shadow: 0 0 0 3px #ff75811a; }
+.social-translations { display: flex; align-items: center; justify-content: space-between; min-height: 32px; margin-top: 10px; color: var(--muted); font-size: 12px; }
+.social-translations:hover { color: var(--gold); }
 .featured-tools { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter); display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .featured-tool { background: var(--panel); border: 1px solid #5a5140; border-radius: 10px; color: var(--text); padding: 23px 26px 0; overflow: hidden; transition: border-color .15s, background .15s; }
 .featured-tool:hover { border-color: var(--gold); background: #202c35; color: var(--text); }
@@ -128,7 +142,7 @@ main > section > h2 { font: 600 16px/1.4 'Segoe UI', sans-serif; margin: 0 0 4px
   .hero { grid-template-columns: 1fr; padding-top: 34px; padding-bottom: 30px; gap: 25px; }
   .hero h1 br { display: none; }
   .hero h1 { max-width: 400px; }
-  .hero-note { display: none; }
+  .social-badge { max-width: 400px; justify-self: start; }
   .tagline { font-size: 15px; margin-top: 17px; }
   .hero-kicker { font-size: 12px; }
   .featured-tools { grid-template-columns: 1fr; gap: 14px; }
