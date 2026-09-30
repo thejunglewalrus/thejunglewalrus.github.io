@@ -227,10 +227,10 @@ tfoot .c-total { text-align:left!important; text-transform:uppercase; letter-spa
 <div class="container">
   <div class="toolbar">
     <div class="seg" id="seg">
-      <button data-model="attempt" class="active">Per Attempt</button>
-      <button data-model="soft">Estimated honing system</button>
+      <button data-model="attempt">Per Attempt</button>
+      <button data-model="soft" class="active">Full Hones</button>
     </div>
-    <select class="luck-sel" id="luck" aria-label="Luck scenario" hidden>
+    <select class="luck-sel" id="luck" aria-label="Luck scenario">
       <option value="best">Perfect luck — 1 tap</option>
       <option value="p25">Lucky — 25th percentile</option>
       <option value="avg" selected>Average cost</option>
@@ -393,7 +393,7 @@ const NOTES = {
 function rateColor(r){ const v=parseFloat(r); return v>=15?'var(--green)':v>=10?'var(--amber)':v>=5?'var(--gold)':v>=3?'#d98b6a':'var(--red)'; }
 const fmt = n => n.toLocaleString('en-US');
 
-let model = 'attempt', fill = 0, luck = 'avg';
+let model = 'soft', fill = 0, luck = 'avg';
 let selectedStages = new Set(Array.from({length:25}, (_,i) => i+1));
 function formatStages(set){
   const arr = [...set].sort((a,b)=>a-b);
