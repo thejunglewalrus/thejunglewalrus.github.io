@@ -89,6 +89,13 @@ h2 { margin: 0; font: 700 2rem/1.02 var(--font-display); text-transform: upperca
 .read { margin: 1rem 1.6rem 1.4rem; padding: .65rem .95rem; border-left: 3px solid var(--gold); background: color-mix(in srgb, var(--gold) 8%, transparent); border-radius: 0 8px 8px 0; font: italic 400 1.0625rem/1.45 var(--font-read); }
 .read::before { content: "My read"; display: block; margin-bottom: .2rem; font: 600 .6875rem/1 var(--font-ui); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
 .card__end { height: 1.4rem; flex: none; }
+.out { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .3rem 1rem; padding: .7rem 1rem .75rem 1.1rem; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent); background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--fg); text-decoration: none; transition: background .2s ease, border-color .2s ease; }
+.out:hover, .out:focus-visible { background: color-mix(in srgb, var(--accent) 18%, transparent); border-color: var(--accent); }
+.out__kicker { display: flex; align-items: center; gap: .5rem; font: 600 .6875rem/1 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.out__kicker::before { content: ""; width: .45rem; height: .45rem; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.out__title { grid-column: 1; font: 700 1.1875rem/1.1 var(--font-display); letter-spacing: .03em; text-transform: uppercase; }
+.out svg { grid-column: 2; grid-row: 1 / span 2; width: 1.25rem; height: 1.25rem; color: var(--accent); transition: transform .2s ease; }
+.out:hover svg { transform: translateX(3px); }
 .art { margin: 0 0 .9rem; display: grid; gap: .4rem; }
 .art img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; object-position: 50% 62%; border-radius: 8px; border: 1px solid var(--plate-line); }
 .art figcaption { font: 500 .75rem/1.35 var(--font-ui); color: var(--fg-muted); }
@@ -319,6 +326,7 @@ h1 { margin: 0; font: 700 clamp(3rem, 6.6vw, 6.25rem)/.88 var(--font-display); l
           <div class="when"><span class="when__day">Wednesday</span><span class="when__date">Nov 4</span><span class="when__count"></span></div>
           <div class="tags"><span class="tag tag--kind">Maintenance</span><span class="tag">Confirmed: "next week"</span></div>
           <h2>The 8th anniversary patch and five quick fixes</h2>
+          <a class="out" href="https://thejunglewalrus.github.io/kr-patch-november-4-2026/patch-2026-11-04.html#update"><span class="out__kicker">Patch notes are out &middot; English translation</span><span class="out__title">Read the full Nov 4 update</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </header>
         <div class="card__body"><ul class="promises">
           <li><span><b>1-button</b> resonance and Paradise slot upgrades.</span><span class="src"><span class="who who--lee">Lee</span><a class="tc" href="https://www.youtube.com/watch?v=_eH-NBn1LNU&amp;t=8102s" aria-label="Watch at 2:15:02 in the broadcast VOD">2:15:02</a></span></li>
@@ -337,6 +345,7 @@ h1 { margin: 0; font: 700 clamp(3rem, 6.6vw, 6.25rem)/.88 var(--font-display); l
           <div class="when"><span class="when__day">Friday</span><span class="when__date">Nov 6</span><span class="when__count"></span></div>
           <div class="tags"><span class="tag tag--kind">Broadcast</span><span class="tag">Confirmed: "next week's Friday"</span></div>
           <h2>8th anniversary broadcast, Lee's first as director</h2>
+          <a class="out" href="https://thejunglewalrus.github.io/kr-patch-november-4-2026/patch-2026-11-04.html#broadcast"><span class="out__kicker">Notice is out &middot; English translation</span><span class="out__title">Broadcast time in your timezone</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </header>
         <div class="card__body"><ul class="promises">
           <li><span><b>Lee hosts</b> the anniversary broadcast, the day before the 8th anniversary itself, with the anniversary rewards.</span><span class="src"><span class="who who--lee">Lee</span><a class="tc" href="https://www.youtube.com/watch?v=_eH-NBn1LNU&amp;t=9153s" aria-label="Watch at 2:32:33 in the broadcast VOD">2:32:33</a></span></li>
